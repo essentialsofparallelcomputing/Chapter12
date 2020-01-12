@@ -10,11 +10,11 @@ set (CMAKE_CUDA_STANDARD 11)
 set (CUDA_PROPAGATE_HOST_FLAGS ON)
 set (CUDA_SEPARABLE_COMPILATION ON)
 
-if (CMAKE_VERSION_MAJOR VERSION_GREATER "3.9.0")
+if (CMAKE_VERSION VERSION_GREATER "3.9.0")
    cuda_select_nvcc_arch_flags(ARCH_FLAGS)
 endif()
 
-set (CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS} -O3;${ARCH_FLAGS})
+set (CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS} -O3 ${ARCH_FLAGS})
 
 # Adds build target of stream_triad with source code files
 cuda_add_executable(stream_triad stream_triad.cu timer.c timer.h)
