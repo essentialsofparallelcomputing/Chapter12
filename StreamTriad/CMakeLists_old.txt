@@ -1,0 +1,31 @@
+cmake_minimum_required (VERSION 2.8)
+project (stream_triad)
+
+find_package(CUDA REQUIRED)
+
+set (CMAKE_CXX_STANDARD 11)
+set (CMAKE_CUDA_STANDARD 11)
+
+# sets CMAKE_{C,CXX}_FLAGS from CUDA compile flags. Includes DEBUG and RELEASE
+set (CUDA_PROPAGATE_HOST_FLAGS ON)
+set (CUDA_SEPARABLE_COMPILATION ON)
+
+if (CMAKE_VERSION_MAJOR VERSION_GREATER "3.9.0")
+   cuda_select_nvcc_arch_flags(ARCH_FLAGS)
+endif()
+
+set (CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS} -O3;${ARCH_FLAGS})
+
+# Adds build target of stream_triad with source code files
+cuda_add_executable(stream_triad stream_triad.cu timer.c timer.h)
+
+if (APPLE)
+    set_property(TARGET stream_triad PROPERTY BUILD_RPATH ${CMAKE_CUDA_IMPLICIT_LINK_DIRECTORIES})
+endif(APPLE)
+
+# Cleanup
+add_custom_target(distclean COMMAND rm -rf CMakeCache.txt CMakeFiles
+                  Makefile cmake_install.cmake stream_triad.dSYM ipo_out.optrpt)
+
+# Adds a make clean_cuda_depends target -- invoke with "make clean_cuda_depends"
+CUDA_BUILD_CLEAN_TARGET()
