@@ -7,8 +7,8 @@ set (CMAKE_CXX_STANDARD 11)
 set (CMAKE_CUDA_STANDARD 11)
 
 # sets CMAKE_{C,CXX}_FLAGS from CUDA compile flags. Includes DEBUG and RELEASE
-set (CUDA_PROPAGATE_HOST_FLAGS ON)
-set (CUDA_SEPARABLE_COMPILATION ON)
+set (CUDA_PROPAGATE_HOST_FLAGS ON) # default is on
+set (CUDA_SEPARABLE_COMPILATION ON) # default is off
 
 if (CMAKE_VERSION VERSION_GREATER "3.9.0")
    cuda_select_nvcc_arch_flags(ARCH_FLAGS)

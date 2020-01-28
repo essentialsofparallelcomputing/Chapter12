@@ -63,10 +63,10 @@ int main(int argc, char *argv[]){
       ttotal_sum += cpu_timer_stop(ttotal);
       // check results and print errors if found. limit to only 10 errors per iteration
       for (int i=0, icount=0; i<stream_array_size && icount < 10; i++){
-          if (c[i] != 1.0 + 3.0*2.0) {
-             printf("Error with result c[%d]=%lf on iter %d\n",i,c[i],k);
-             icount++;
-          }
+         if (c[i] != 1.0 + 3.0*2.0) {
+            printf("Error with result c[%d]=%lf on iter %d\n",i,c[i],k);
+            icount++;
+         }
       }
    }
    printf("Average runtime is %lf msecs data transfer is %lf msecs\n",

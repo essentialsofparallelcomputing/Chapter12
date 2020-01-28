@@ -1,16 +1,12 @@
 cmake_minimum_required (VERSION 3.8)
 project (stream_triad)
 
-include(CheckLanguage)
-check_language(CUDA)
-
 enable_language(CXX CUDA)
-
-#set (ARCH_FLAGS -arch=sm_30)
 
 set (CMAKE_CXX_STANDARD 11)
 set (CMAKE_CUDA_STANDARD 11)
 
+#set (ARCH_FLAGS -arch=sm_30)
 set (CMAKE_CUDA_FLAGS ${CMAKE_CUDA_FLAGS}; "-O3 ${ARCH_FLAGS}")
 
 # Adds build target of stream_triad with source code files
