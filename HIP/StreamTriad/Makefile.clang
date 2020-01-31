@@ -1,0 +1,16 @@
+all: StreamTriad
+
+CXX = hipcc
+
+CUDA_PATH = /projects/opt/centos7/cuda/10.1/
+
+%.cc : %.cu
+	hipify-clang $^ > $@
+
+StreamTriad.o: StreamTriad.cc
+
+StreamTriad: StreamTriad.o timer.o
+	${CXX} -o $@ $^ 
+
+clean:
+		rm -rf StreamTriad *.o StreamTriad.cc
