@@ -34,7 +34,7 @@ int main(int argc, char *argv[]){
    iret = ezcl_devtype_init(CL_DEVICE_TYPE_GPU, &command_queue, &context);
    //cl_context context = ezcl_get_context();
    const char *defines = NULL;
-   cl_program program  = ezcl_create_program_wsource(context, defines, StreamTriad_kern_source);
+   cl_program program  = ezcl_create_program_wsource(context, defines, StreamTriad_kernel_source);
    cl_kernel kernel_stream_triad = clCreateKernel(program, "StreamTriad", &iret);
 
    // allocate device memory. suffix of _d indicates a device pointer

@@ -18,8 +18,8 @@ add_dependencies(StreamTriad StreamTriad_kernel_source)
 ########### embed source target ###############
 message(${CMAKE_CURRENT_BINARY_DIR})
 add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/StreamTriad_kernel.inc
-                  COMMAND ${CMAKE_SOURCE_DIR}/embed_source.pl ${CMAKE_SOURCE_DIR}/StreamTriad_kern.cl > StreamTriad_kernel.inc
-                  DEPENDS StreamTriad_kern.cl ${CMAKE_SOURCE_DIR}/embed_source.pl)
+                  COMMAND ${CMAKE_SOURCE_DIR}/embed_source.pl ${CMAKE_SOURCE_DIR}/StreamTriad_kernel.cl > StreamTriad_kernel.inc
+                  DEPENDS StreamTriad_kernel.cl ${CMAKE_SOURCE_DIR}/embed_source.pl)
 add_custom_target(StreamTriad_kernel_source ALL DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/StreamTriad_kernel.inc)
 
 # Cleanup
