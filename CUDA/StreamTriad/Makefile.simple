@@ -1,4 +1,4 @@
-all: stream_triad
+all: StreamTriad
 
 NVCC = nvcc
 #NVCC_FLAGS = -arch=sm_30
@@ -7,8 +7,8 @@ NVCC = nvcc
 %.o : %.cu
 	${NVCC} ${NVCC_FLAGS} -c $< -o $@
 
-stream_triad: stream_triad.o timer.o
+StreamTriad: StreamTriad.o timer.o
 	${CXX} -o $@ $^ -L${CUDA_LIB} -lcudart
 
 clean:
-		rm -rf stream_triad *.o
+		rm -rf StreamTriad *.o

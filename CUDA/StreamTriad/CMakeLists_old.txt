@@ -1,5 +1,5 @@
 cmake_minimum_required (VERSION 2.8)
-project (stream_triad)
+project (StreamTriad)
 
 find_package(CUDA REQUIRED)
 
@@ -16,16 +16,16 @@ endif()
 
 set (CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS} -O3 ${ARCH_FLAGS})
 
-# Adds build target of stream_triad with source code files
-cuda_add_executable(stream_triad stream_triad.cu timer.c timer.h)
+# Adds build target of StreamTriad with source code files
+cuda_add_executable(StreamTriad StreamTriad.cu timer.c timer.h)
 
 if (APPLE)
-    set_property(TARGET stream_triad PROPERTY BUILD_RPATH ${CMAKE_CUDA_IMPLICIT_LINK_DIRECTORIES})
+    set_property(TARGET StreamTriad PROPERTY BUILD_RPATH ${CMAKE_CUDA_IMPLICIT_LINK_DIRECTORIES})
 endif(APPLE)
 
 # Cleanup
 add_custom_target(distclean COMMAND rm -rf CMakeCache.txt CMakeFiles
-                  Makefile cmake_install.cmake stream_triad.dSYM ipo_out.optrpt)
+                  Makefile cmake_install.cmake StreamTriad.dSYM ipo_out.optrpt)
 
 # Adds a make clean_cuda_depends target -- invoke with "make clean_cuda_depends"
 CUDA_BUILD_CLEAN_TARGET()
