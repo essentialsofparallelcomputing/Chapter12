@@ -5,7 +5,7 @@ CXX = hipcc
 CUDA_PATH = /projects/opt/centos7/cuda/10.1/
 
 %.cc : %.cu
-	hipify-clang $^ > $@
+	hipify-clang $^ > $@ --cuda-path=${CUDA_PATH} 
 
 StreamTriad.o: StreamTriad.cc
 
