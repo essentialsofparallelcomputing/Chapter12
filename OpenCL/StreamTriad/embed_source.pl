@@ -10,27 +10,12 @@ print "const char *",$file,"_source =\n";
 
 while(<>) {
    if ($ARGV ne $ARGV_LAST){
-#      $comment = 0;
       $ARGV_LAST=$ARGV;
    }
    chop $_;
 
    s/"/""/g;
    s/\\/\\\\/g;
-
-#   if (/^\/\*/){
-#      #print "Setting comment to 1\n";
-#      $comment = 1;
-#   }
-#   if (/\*\/$/){
-#      #print "Setting comment to 0\n";
-#      $comment = 0;
-#      next;
-#   }
-#   if ($comment eq 1) {
-#      #print "Skip line and goto next\n";
-##      next;
-#   }
 
    print '"',$_,'\n','"',"\n";
 }

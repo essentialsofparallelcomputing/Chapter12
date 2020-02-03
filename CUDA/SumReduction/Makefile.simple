@@ -1,0 +1,14 @@
+all: SumReduction
+
+NVCC = nvcc
+#NVCC_FLAGS = -arch=sm_30
+#CUDA_LIB = <path>
+
+%.o : %.cu
+	${NVCC} ${NVCC_FLAGS} -c $< -o $@
+
+SumReduction: SumReduction.o timer.o
+	${CXX} -o $@ $^ -L${CUDA_LIB} -lcudart
+
+clean:
+	rm -rf SumReduction *.o
