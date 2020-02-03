@@ -1,0 +1,16 @@
+all: SumReduction
+
+#CFLAGS = -DDEVICE_DETECT_DEBUG=1
+#OPENCL_LIB = <path>
+
+%.inc : %.cl
+	        ./embed_source.pl $^ > $@
+
+SumReduction.o: SumReduction.c SumReduction_kernel.inc
+
+SumReduction: SumReduction.o timer.o ezcl_lite.o
+	        ${CC} -o $@ $^ ${OPENCL_LIB} -lOpenCL
+
+clean:
+	        rm -rf SumReduction *.o SumReduction_kernel.inc
+
