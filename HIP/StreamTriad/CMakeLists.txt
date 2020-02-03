@@ -1,5 +1,5 @@
 cmake_minimum_required (VERSION 2.8.3)
-project (stream_triad)
+project (StreamTriad)
 
 set (CMAKE_CXX_STANDARD 11)
 
@@ -24,7 +24,7 @@ set(MY_HIPCC_OPTIONS )
 set(MY_HCC_OPTIONS )
 set(MY_NVCC_OPTIONS )
 
-# Adds build target of stream_triad with source code files
+# Adds build target of StreamTriad with source code files
 HIP_ADD_EXECUTABLE(StreamTriad StreamTriad.cc timer.c timer.h)
 target_include_directories(StreamTriad PRIVATE ${HIP_PATH}/include)
 target_link_directories(StreamTriad PRIVATE ${HIP_PATH}/lib)

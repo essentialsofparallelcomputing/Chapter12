@@ -35,7 +35,7 @@ int main(int argc, char *argv[]){
    //cl_context context = ezcl_get_context();
    const char *defines = NULL;
    cl_program program  = ezcl_create_program_wsource(context, defines, StreamTriad_kernel_source);
-   cl_kernel kernel_stream_triad = clCreateKernel(program, "StreamTriad", &iret);
+   cl_kernel kernel_StreamTriad = clCreateKernel(program, "StreamTriad", &iret);
 
    // allocate device memory. suffix of _d indicates a device pointer
    size_t nsize = stream_array_size*sizeof(double);
@@ -60,18 +60,18 @@ int main(int argc, char *argv[]){
 
       cpu_timer_start(&tkernel);
       // set stream triad kernel arguments
-      iret=clSetKernelArg(kernel_stream_triad, 0, sizeof(cl_int),    (void *)&stream_array_size);
+      iret=clSetKernelArg(kernel_StreamTriad, 0, sizeof(cl_int),    (void *)&stream_array_size);
       if (iret != CL_SUCCESS) ezcl_print_error(iret, "clSetKernelArg");
-      iret=clSetKernelArg(kernel_stream_triad, 1, sizeof(cl_double), (void *)&scalar);
+      iret=clSetKernelArg(kernel_StreamTriad, 1, sizeof(cl_double), (void *)&scalar);
       if (iret != CL_SUCCESS) ezcl_print_error(iret, "clSetKernelArg");
-      iret=clSetKernelArg(kernel_stream_triad, 2, sizeof(cl_mem),    (void *)&a_d);
+      iret=clSetKernelArg(kernel_StreamTriad, 2, sizeof(cl_mem),    (void *)&a_d);
       if (iret != CL_SUCCESS) ezcl_print_error(iret, "clSetKernelArg");
-      iret=clSetKernelArg(kernel_stream_triad, 3, sizeof(cl_mem),    (void *)&b_d);
+      iret=clSetKernelArg(kernel_StreamTriad, 3, sizeof(cl_mem),    (void *)&b_d);
       if (iret != CL_SUCCESS) ezcl_print_error(iret, "clSetKernelArg");
-      iret=clSetKernelArg(kernel_stream_triad, 4, sizeof(cl_mem),    (void *)&c_d);
+      iret=clSetKernelArg(kernel_StreamTriad, 4, sizeof(cl_mem),    (void *)&c_d);
       if (iret != CL_SUCCESS) ezcl_print_error(iret, "clSetKernelArg");
       // call stream triad kernel
-      clEnqueueNDRangeKernel(command_queue, kernel_stream_triad, 1, NULL, &global_work_size, &local_work_size, 0, NULL, NULL);
+      clEnqueueNDRangeKernel(command_queue, kernel_StreamTriad, 1, NULL, &global_work_size, &local_work_size, 0, NULL, NULL);
       if (iret != CL_SUCCESS) ezcl_print_error(iret, "clEnqueueNDRangeKernel");
       // need to force completion to get timing
       //cudaDeviceSynchronize();
@@ -97,7 +97,7 @@ int main(int argc, char *argv[]){
    clReleaseMemObject(b_d);
    clReleaseMemObject(c_d);
 
-   clReleaseKernel(kernel_stream_triad);
+   clReleaseKernel(kernel_StreamTriad);
    clReleaseCommandQueue(command_queue);
    clReleaseContext(context);
    clReleaseProgram(program);

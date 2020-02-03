@@ -8,7 +8,7 @@ extern "C" {
 #define NTIMES 16
 
 // CUDA kernel version of stream triad
-__global__ void stream_triad(int n, double scalar, double *a, double *b, double *c){
+__global__ void StreamTriad(int n, double scalar, double *a, double *b, double *c){
    int i = blockIdx.x*blockDim.x+threadIdx.x;
 
    // Protect from going out-of-bounds
@@ -54,7 +54,7 @@ int main(int argc, char *argv[]){
 
       cpu_timer_start(&tkernel);
       // launch stream triad kernel
-      hipLaunchKernelGGL(stream_triad, dim3(gridsize), dim3(blocksize), 0, 0, stream_array_size, scalar, a_d, b_d, c_d);
+      hipLaunchKernelGGL(StreamTriad, dim3(gridsize), dim3(blocksize), 0, 0, stream_array_size, scalar, a_d, b_d, c_d);
       // need to force completion to get timing
       hipDeviceSynchronize();
       tkernel_sum += cpu_timer_stop(tkernel);

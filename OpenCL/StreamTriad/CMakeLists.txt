@@ -1,5 +1,5 @@
 cmake_minimum_required (VERSION 3.1)
-project (stream_triad)
+project (StreamTriad)
 
 if (DEVICE_DETECT_DEBUG)
    add_definitions(-DDEVICE_DETECT_DEBUG=1)
@@ -10,7 +10,7 @@ set(HAVE_CL_DOUBLE ON CACHE BOOL "Have OpenCL Double")
 set(NO_CL_DOUBLE OFF)
 include_directories(${OpenCL_INCLUDE_DIRS})
 
-# Adds build target of stream_triad with source code files
+# Adds build target of StreamTriad with source code files
 add_executable(StreamTriad StreamTriad.c ezclsmall.c ezclsmall.h timer.c timer.h)
 target_link_libraries(StreamTriad ${OpenCL_LIBRARIES})
 add_dependencies(StreamTriad StreamTriad_kernel_source)
@@ -24,6 +24,6 @@ add_custom_target(StreamTriad_kernel_source ALL DEPENDS ${CMAKE_CURRENT_BINARY_D
 
 # Cleanup
 add_custom_target(distclean COMMAND rm -rf CMakeCache.txt CMakeFiles
-                  Makefile cmake_install.cmake stream_triad.dSYM ipo_out.optrpt)
+                  Makefile cmake_install.cmake StreamTriad.dSYM ipo_out.optrpt)
 
 SET_DIRECTORY_PROPERTIES(PROPERTIES ADDITIONAL_MAKE_CLEAN_FILES "StreamTriad_kernel.inc")

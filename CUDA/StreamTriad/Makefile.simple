@@ -11,4 +11,4 @@ StreamTriad: StreamTriad.o timer.o
 	${CXX} -o $@ $^ -L${CUDA_LIB} -lcudart
 
 clean:
-		rm -rf StreamTriad *.o
+	rm -rf StreamTriad *.o
