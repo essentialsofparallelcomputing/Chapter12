@@ -4,7 +4,11 @@ extern "C" {
    #include "timer.h"
 }
 
+#ifdef __NVCC__
 #define MIN_REDUCE_SYNC_SIZE 32
+#else
+#define MIN_REDUCE_SYNC_SIZE 64
+#endif
 
 #define REDUCE_IN_TILE(operation, _spad_arr)                                    \
     for (int offset = ntX >> 1; offset > MIN_REDUCE_SYNC_SIZE; offset >>= 1)    \
