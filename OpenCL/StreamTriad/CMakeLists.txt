@@ -11,7 +11,7 @@ set(NO_CL_DOUBLE OFF)
 include_directories(${OpenCL_INCLUDE_DIRS})
 
 # Adds build target of StreamTriad with source code files
-add_executable(StreamTriad StreamTriad.c ezclsmall.c ezclsmall.h timer.c timer.h)
+add_executable(StreamTriad StreamTriad.c ezcl_lite.c ezcl_lite.h timer.c timer.h)
 target_link_libraries(StreamTriad ${OpenCL_LIBRARIES})
 add_dependencies(StreamTriad StreamTriad_kernel_source)
 

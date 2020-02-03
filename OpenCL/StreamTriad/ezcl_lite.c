@@ -70,7 +70,7 @@
 //#include <sys/stat.h>
 #include <execinfo.h>
 
-#include "ezclsmall.h"
+#include "ezcl_lite.h"
 
 static cl_device_id    *devices;
 static int compute_device = 0;

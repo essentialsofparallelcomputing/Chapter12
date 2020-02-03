@@ -8,7 +8,7 @@ all: StreamTriad
 
 StreamTriad.o: StreamTriad.c StreamTriad_kernel.inc
 
-StreamTriad: StreamTriad.o timer.o ezclsmall.o
+StreamTriad: StreamTriad.o timer.o ezcl_lite.o
 	${CC} -o $@ $^ ${OPENCL_LIB} -lOpenCL
 
 clean:

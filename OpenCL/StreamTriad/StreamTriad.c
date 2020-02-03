@@ -8,7 +8,7 @@
 #else
 #include <CL/cl.h>
 #endif
-#include "ezclsmall.h"
+#include "ezcl_lite.h"
 
 #define NTIMES 16
 
