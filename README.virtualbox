@@ -74,14 +74,12 @@
 
 # ====
 sudo apt-get update
-# #sudo apt-get install gcc make
-# #sudo apt install gcc-7
 
-sudo apt install build-essential dkms
-sudo apt-get install virtualbox-guest-additions-iso
-# Look for Virtual box guest additions in file manager as a mounted device
+sudo apt install build-essential dkms -y
+sudo apt-get install virtualbox-guest-additions-iso -y
+# if does not automaticall run, go to file manager and clic on the CD. Choose Open Autorun Prompt
 
-sudo apt install nvidia-visual-profiler
+sudo apt install nvidia-visual-profiler -y
 
 # To run nvvp -- nvvp  -vm /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java
 
