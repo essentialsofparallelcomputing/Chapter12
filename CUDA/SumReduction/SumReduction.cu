@@ -6,42 +6,30 @@ extern "C" {
 
 #define MIN_REDUCE_SYNC_SIZE warpSize
 
-#define REDUCE_IN_TILE(operation, _spad_arr)                                    \
-    for (int offset = ntX >> 1; offset > MIN_REDUCE_SYNC_SIZE; offset >>= 1)    \
-    {                                                                           \
-        if (tiX < offset)                                                       \
-        {                                                                       \
-            _spad_arr[tiX] = operation(_spad_arr[tiX], _spad_arr[tiX+offset]);  \
-        }                                                                       \
-        __syncthreads();                                                        \
-    }                                                                           \
-    if (tiX < MIN_REDUCE_SYNC_SIZE)                                             \
-    {                                                                           \
-        for (int offset = MIN_REDUCE_SYNC_SIZE; offset > 1; offset >>= 1)       \
-        {                                                                       \
-            _spad_arr[tiX] = operation(_spad_arr[tiX], _spad_arr[tiX+offset]);  \
-            __syncthreads();                                                    \
-        }                                                                       \
-        _spad_arr[tiX] = operation(_spad_arr[tiX], _spad_arr[tiX+1]);           \
-    }
-
-__device__ double SUM(double a, double b)
-{
-    return a + b; 
-}
-
-__device__ void reduction_sum_within_spad(double  *spad)
+__device__ void reduction_sum_within_block(double  *spad)
 {
    const unsigned int tiX  = threadIdx.x;
    const unsigned int ntX  = blockDim.x;
 
-   REDUCE_IN_TILE(SUM, spad);
+   for (int offset = ntX >> 1; offset > MIN_REDUCE_SYNC_SIZE; offset >>= 1) {
+      if (tiX < offset) {
+         spad[tiX] = spad[tiX] + spad[tiX+offset];
+      }
+      __syncthreads();
+   }
+   if (tiX < MIN_REDUCE_SYNC_SIZE) {
+      for (int offset = MIN_REDUCE_SYNC_SIZE; offset > 1; offset >>= 1) {
+         spad[tiX] = spad[tiX] + spad[tiX+offset];
+         __syncthreads();
+      }
+      spad[tiX] = spad[tiX] + spad[tiX+1];
+   }
 }
 
 __global__ void reduce_sum_stage1of2(
                  const int      isize,      // 0  Total number of cells.
-                       double  *array,      // 1 
-                       double  *blocksum,   // 2 
+                       double  *array,      // 1
+                       double  *blocksum,   // 2
                        double  *redscratch) // 3
 {
     extern __shared__ double spad[];
@@ -53,17 +41,17 @@ __global__ void reduce_sum_stage1of2(
     spad[tiX] = 0.0;
     if (giX < isize) {
       spad[tiX] = array[giX];
-    }    
+    }
 
     __syncthreads();
 
-    reduction_sum_within_spad(spad);
+    reduction_sum_within_block(spad);
 
     //  Write the local value back to an array size of the number of groups
     if (tiX == 0){
       redscratch[group_id] = spad[0];
       (*blocksum) = spad[0];
-    }    
+    }
 }
 
 __global__ void reduce_sum_stage2of2(
@@ -75,9 +63,9 @@ __global__ void reduce_sum_stage2of2(
    const unsigned int tiX  = threadIdx.x;
    const unsigned int ntX  = blockDim.x;
 
-   int giX = tiX; 
+   int giX = tiX;
 
-   spad[tiX] = 0.0; 
+   spad[tiX] = 0.0;
 
    // load the sum from reduction scratch, redscratch
    if (tiX < isize) spad[tiX] = redscratch[giX];
@@ -88,9 +76,9 @@ __global__ void reduce_sum_stage2of2(
 
    __syncthreads();
 
-   reduction_sum_within_spad(spad);
+   reduction_sum_within_block(spad);
 
-   if (tiX == 0) { 
+   if (tiX == 0) {
      (*total_sum) = spad[0];
    }
 }
@@ -105,13 +93,13 @@ int main(int argc, char *argv[]){
    for (int i = 0; i<nsize; i++){
      //x[i] = rand()*100.0;
      x[i] = 1.0;
-   }   
+   }
 
    struct timespec tstart_cpu;
    cpu_timer_start(&tstart_cpu);
 
-   size_t blocksize = 128; 
-   size_t blocksizebytes = blocksize*sizeof(double); 
+   size_t blocksize = 128;
+   size_t blocksizebytes = blocksize*sizeof(double);
    size_t global_work_size = ((nsize + blocksize - 1) /blocksize) * blocksize;
    size_t gridsize     = global_work_size/blocksize;
 
