@@ -93,6 +93,3 @@ sudo apt install nvidia-visual-profiler -y
 # and pick the java-8
 
 # If Software updater prompts, install updated software --> wait ....
-
-# echo 'export PATH=/project/ndiff-2.00:$PATH' >> ~/.bash_profile
-# source ~/.bash_profile
