@@ -76,11 +76,20 @@ sudo apt-get update
 
 sudo apt install build-essential dkms
 sudo apt-get install virtualbox-guest-additions-iso
-# #cd /media
-# #sh ./VBoxLinuxAdditions.run
 # Look for Virtual box guest additions in file manager as a mounted device
 
-sudo apt install openjdk-8-jdk
+sudo apt install nvidia-visual-profiler
+
+# To run nvvp -- nvvp  -vm /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java
+
+# ====================
+
+# Manually select pull-down menu Devices -> Install Guest additions
+# May need to shutdown and restart guest VM
+
+#sudo apt install openjdk-8-jdk
+# sudo update-alternatives --config java
+# and pick the java-8
 
 #wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/cuda-ubuntu1804.pin
 #sudo mv cuda-ubuntu1804.pin /etc/apt/preferences.d/cuda-repository-pin-600
@@ -89,14 +98,6 @@ sudo apt install openjdk-8-jdk
 #sudo apt-key add /var/cuda-repo-10-2-local-10.2.89-440.33.01/7fa2af80.pub
 ##sudo apt-get update
 #sudo apt-get -y install cuda
-
-sudo apt install nvidia-visual-profiler
-
-sudo update-alternatives --config java
-====================
-# and pick the java-8
-# To run nvvp -- nvvp  -vm /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java
-
 # If Software updater prompts, install updated software --> wait ....
 
 # sudo apt-get install -y bash cmake git openmpi-bin openmpi-doc libopenmpi-dev g++ vim wget valgrind
