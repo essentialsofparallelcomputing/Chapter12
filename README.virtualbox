@@ -58,6 +58,19 @@
 
 # sudo apt install git
 
+
+# git clone https://github.com/essentialsofparallelcomputing/Chapter12.git
+
+# ./README.virtualbox
+
+# ====
+sudo apt-get update
+
+sudo apt install build-essential dkms -y
+sudo apt-get install virtualbox-guest-additions-iso -y
+
+# if does not automatically run, go to file manager and clic on the CD. Choose Open Autorun Prompt
+
 # Make virtualbox window active and select devices from window menus at top of screen
 #     Shared Clipboard --> bidirectional
 #     Drag and Drop --> bidirectional
@@ -67,21 +80,9 @@
 # Copy on Mac is command-C and paste in Ubuntu is shift-ctrl-v
 
 
-# git clone https://github.com/essentialsofparallelcomputing/Chapter12.git
-
-# Now chmod +x README.virtualbox
-# ./README.virtualbox
-
-# ====
-sudo apt-get update
-
-sudo apt install build-essential dkms -y
-sudo apt-get install virtualbox-guest-additions-iso -y
-# if does not automaticall run, go to file manager and clic on the CD. Choose Open Autorun Prompt
-
 sudo apt install nvidia-visual-profiler -y
 
-# To run nvvp -- nvvp  -vm /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java
+# To run nvvp -- nvvp
 
 # ====================
 
