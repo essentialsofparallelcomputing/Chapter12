@@ -79,7 +79,6 @@ sudo apt-get install virtualbox-guest-additions-iso -y
 #     reboot and test copy paste
 # Copy on Mac is command-C and paste in Ubuntu is shift-ctrl-v
 
-
 sudo apt install nvidia-visual-profiler -y
 
 # To run nvvp -- nvvp
@@ -93,20 +92,7 @@ sudo apt install nvidia-visual-profiler -y
 # sudo update-alternatives --config java
 # and pick the java-8
 
-#wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/cuda-ubuntu1804.pin
-#sudo mv cuda-ubuntu1804.pin /etc/apt/preferences.d/cuda-repository-pin-600
-#wget http://developer.download.nvidia.com/compute/cuda/10.2/Prod/local_installers/cuda-repo-ubuntu1804-10-2-local-10.2.89-440.33.01_1.0-1_amd64.deb
-#sudo dpkg -i cuda-repo-ubuntu1804-10-2-local-10.2.89-440.33.01_1.0-1_amd64.deb
-#sudo apt-key add /var/cuda-repo-10-2-local-10.2.89-440.33.01/7fa2af80.pub
-##sudo apt-get update
-#sudo apt-get -y install cuda
 # If Software updater prompts, install updated software --> wait ....
-
-# sudo apt-get install -y bash cmake git openmpi-bin openmpi-doc libopenmpi-dev g++ vim wget valgrind
-
-# git clone https://github.com/essentialsofparallelcomputing/Chapter2.git
-
-# wget ftp://ftp.math.utah.edu/pub/misc/ndiff-2.00.tar.gz; tar -xzvf ndiff-2.00.tar.gz; cd ndiff-2.00; ./configure; make; cd ..
 
 # echo 'export PATH=/project/ndiff-2.00:$PATH' >> ~/.bash_profile
 # source ~/.bash_profile
