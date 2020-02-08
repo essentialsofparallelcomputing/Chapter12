@@ -66,10 +66,13 @@
 #     reboot and test copy paste
 # Copy on Mac is command-C and paste in Ubuntu is shift-ctrl-v
 
+
+# git clone https://github.com/essentialsofparallelcomputing/Chapter12.git
+
+# Now chmod +x README.virtualbox
+# ./README.virtualbox
+
 # ====
-
-git clone https://github.com/essentialsofparallelcomputing/Chapter12.git
-
 sudo apt-get update
 # #sudo apt-get install gcc make
 # #sudo apt install gcc-7
