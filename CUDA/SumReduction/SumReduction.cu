@@ -120,6 +120,7 @@ int main(int argc, char *argv[]){
    cudaMemcpy(&total_sum, dev_total_sum, 1*sizeof(double), cudaMemcpyDeviceToHost);
    printf("Result -- total sum %lf \n",total_sum);
 
+   cudaFree(dev_redscratch);
    cudaFree(dev_total_sum);
    cudaFree(dev_x);
 
