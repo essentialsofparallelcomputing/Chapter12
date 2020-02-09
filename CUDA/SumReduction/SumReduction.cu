@@ -113,7 +113,7 @@ int main(int argc, char *argv[]){
    reduce_sum_stage1of2<<<gridsize, blocksize, blocksizebytes>>>(nsize, dev_x, dev_total_sum, dev_redscratch);
 
    if (gridsize > 1) {
-      reduce_sum_stage2of2<<<gridsize, blocksize, blocksizebytes>>>(nsize, dev_total_sum, dev_redscratch);
+      reduce_sum_stage2of2<<<1, blocksize, blocksizebytes>>>(nsize, dev_total_sum, dev_redscratch);
    }
 
    double total_sum;
