@@ -7,7 +7,7 @@
 
 # Click on New
 
-# Type in a name [chapter2]
+# Type in a name [chapter12]
 # Select Linux and Ubuntu 64-bit
 
 # Select the amount of memory [8192]
@@ -38,10 +38,10 @@
 
 # Select timezone
 
-# Your name [chapter2]
-# Your computer's name [chapter2-virtualbox]
-# Username [chapter2]
-# password [chapter2]
+# Your name [chapter12]
+# Your computer's name [chapter12-virtualbox]
+# Username [chapter12]
+# password [chapter12]
 # Select "Require my password to log in"
 
 # Select continue
@@ -85,7 +85,7 @@ sudo apt install nvidia-visual-profiler -y
 
 wget https://github.com/GPUOpen-Tools/CodeXL/releases/download/v2.6/codexl_2.6-302_amd64.deb
 sudo dpkg -i codexl_2.6-302_amd64.deb
-sudo apt-get -f install
+sudo apt-get -f install -y
 
 # AMD profiler should be in /opt/CodeXL_2.6-302
 # Add to path in .bash_profile with 
