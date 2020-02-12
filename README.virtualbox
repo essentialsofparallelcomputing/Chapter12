@@ -69,7 +69,7 @@ sudo apt-get update
 sudo apt install build-essential dkms -y
 sudo apt-get install virtualbox-guest-additions-iso -y
 
-# if does not automatically run, go to file manager and clic on the CD. Choose Open Autorun Prompt
+# if does not automatically run, go to file manager and click on the CD. Choose Open Autorun Prompt
 
 # Make virtualbox window active and select devices from window menus at top of screen
 #     Shared Clipboard --> bidirectional
@@ -79,20 +79,27 @@ sudo apt-get install virtualbox-guest-additions-iso -y
 #     reboot and test copy paste
 # Copy on Mac is command-C and paste in Ubuntu is shift-ctrl-v
 
-sudo apt install nvidia-visual-profiler -y
+pushd /tmp
+wget https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS-2023.PUB
+sudo apt-key add GPG-PUB-KEY-INTEL-SW-PRODUCTS-2023.PUB
+rm GPG-PUB-KEY-INTEL-SW-PRODUCTS-2023.PUB
+popd
+sudo add-apt-repository "deb https://apt.repos.intel.com/oneapi all main"
+sudo apt-get update
+sudo apt-get install intel-basekit -y
+sudo apt-get install intel-hpckit -y
+sudo cmake pkg-config
 
-# To run nvvp -- nvvp
+# add to bash_profile "source /opt/intel/inteloneapi/setvars.sh"
 
-wget https://github.com/GPUOpen-Tools/CodeXL/releases/download/v2.6/codexl_2.6-302_amd64.deb
-sudo dpkg -i codexl_2.6-302_amd64.deb
-sudo apt-get -f install -y
+source /opt/intel/inteloneapi/setvars.sh
 
-# AMD profiler should be in /opt/CodeXL_2.6-302
-# Add to path in .bash_profile with 
-# export PATH=/opt/CodeXL_2.6-302:${PATH}
-# run with ./CodeXL or CodeXL once it is in your path
+cat << EOF | sudo tee /etc/apt/sources.list.d/intel-graphics.list
+deb [trusted=yes arch=amd64] https://repositories.intel.com/graphics/ubuntu bionic main
+EOF
+sudo apt-get update && sudo apt-get install -y intel-opencl
 
-
+sudo usermod -a -G video $USER
 
 # ====================
 
