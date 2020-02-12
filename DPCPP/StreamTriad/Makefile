@@ -4,7 +4,7 @@ EXTFLAGS         = -fsycl-unnamed-lambda
 
 all: StreamTriad
 
-StreamTriad: StreamTriad.cc
+StreamTriad: StreamTriad.cc timer.o
 	$(CXX) $(CXXFLAGS) $< -o $@
 
 clean:
