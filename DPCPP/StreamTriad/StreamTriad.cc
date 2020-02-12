@@ -27,9 +27,9 @@ int main(int argc, char * argv[])
 
     const double scalar = 3;
 
-    sycl::buffer<double,1> dev_a { a.data(), sycl::range<1>(h_a.size()) };
-    sycl::buffer<double,1> dev_b { b.data(), sycl::range<1>(h_b.size()) };
-    sycl::buffer<double,1> dev_c { c.data(), sycl::range<1>(h_c.size()) };
+    sycl::buffer<double,1> dev_a { a.data(), sycl::range<1>(a.size()) };
+    sycl::buffer<double,1> dev_b { b.data(), sycl::range<1>(b.size()) };
+    sycl::buffer<double,1> dev_c { c.data(), sycl::range<1>(c.size()) };
 
     q.submit([&](sycl::handler& h) {
 
@@ -47,5 +47,5 @@ int main(int argc, char * argv[])
     ttotal_sum += cpu_timer_stop(ttotal);
 
     std::cout << "Program completed without error." << std::endl;
-    std::cout << "Runtime is %lf msecs " << ttotal_sum << std::endl;
+    std::cout << "Runtime is  " << ttotal_sum << " msecs " <<std::endl;
 }
