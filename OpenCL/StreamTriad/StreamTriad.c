@@ -30,9 +30,8 @@ int main(int argc, char *argv[]){
    }
 
    cl_command_queue command_queue;
-   cl_context context;// = ezcl_get_context();
+   cl_context context;
    iret = ezcl_devtype_init(CL_DEVICE_TYPE_GPU, &command_queue, &context);
-   //cl_context context = ezcl_get_context();
    const char *defines = NULL;
    cl_program program  = ezcl_create_program_wsource(context, defines, StreamTriad_kernel_source);
    cl_kernel kernel_StreamTriad = clCreateKernel(program, "StreamTriad", &iret);
@@ -54,9 +53,6 @@ int main(int argc, char *argv[]){
       if (iret != CL_SUCCESS) ezcl_print_error(iret, "clEnqueueWriteBuffer");
       iret=clEnqueueWriteBuffer(command_queue, b_d, CL_TRUE, 0, nsize, &b[0], 0, NULL, NULL);
       if (iret != CL_SUCCESS) ezcl_print_error(iret, "clEnqueueWriteBuffer");
-      // cuda memcopy to device returns after buffer available, so synchronize to
-      // get accurate timing for kernel only
-      //cudaDeviceSynchronize();
 
       cpu_timer_start(&tkernel);
       // set stream triad kernel arguments
@@ -74,11 +70,9 @@ int main(int argc, char *argv[]){
       clEnqueueNDRangeKernel(command_queue, kernel_StreamTriad, 1, NULL, &global_work_size, &local_work_size, 0, NULL, NULL);
       if (iret != CL_SUCCESS) ezcl_print_error(iret, "clEnqueueNDRangeKernel");
       // need to force completion to get timing
-      //cudaDeviceSynchronize();
+      clEnqueueBarrier(command_queue);
       tkernel_sum += cpu_timer_stop(tkernel);
 
-      // cuda memcpy from device to host blocks for completion so no need for synchronize
-      //ezcl_enqueue_read_buffer(command_queue, c_d, CL_TRUE, 0, nsize, c, NULL);
       iret=clEnqueueReadBuffer(command_queue, c_d, CL_TRUE, 0, nsize, c, 0, NULL, NULL);
       if (iret != CL_SUCCESS) ezcl_print_error(iret, "clEnqueueReadBuffer");
       ttotal_sum += cpu_timer_stop(ttotal);

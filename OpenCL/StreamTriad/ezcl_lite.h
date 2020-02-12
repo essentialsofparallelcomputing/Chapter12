@@ -94,11 +94,11 @@ extern "C"
 cl_int ezcl_devtype_init_p(cl_device_type device_type, cl_command_queue *command_queue, cl_context *context,
                            const char *file, const int line);
 
-/* Error reporting */
-void ezcl_print_error_p(const int ierr, const char *routine, const char *cl_routine, const char *file, const int line);
-
 /* kernel and program routines */
 cl_program ezcl_create_program_wsource_p(cl_context context, const char *defines, const char *source, const char *file, const int line);
+
+/* Error reporting */
+void ezcl_print_error_p(const int ierr, const char *routine, const char *cl_routine, const char *file, const int line);
 
    
 #ifdef __cplusplus
