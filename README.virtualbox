@@ -25,6 +25,8 @@
 # Select iso file saved earlier [ubuntu-18.04.2-desktop-amd64.iso]
 
 # Switch to Scaled View. It is under View menu or use Right-Command C to switch back and forth
+# Once the guest additions is installed, you can set a higher resolution display with the
+#   view menu pull-down at the top menu bar
 # Main menu bar is hidden (access it by right command home (left command))
 
 # Select Install Ubuntu
