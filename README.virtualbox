@@ -101,6 +101,35 @@ sudo apt-get update && sudo apt-get install -y intel-opencl
 
 sudo usermod -a -G video $USER
 
+# triSYCL
+
+git clone https://github.com/triSYCL/triSYCL.git
+
+# computeCPP
+
+# DPCPP standalone
+
+#SYCL_HOME=${HOME}/DPCC
+#mkdir $SYCL_HOME
+#cd $SYCL_HOME
+#git clone https://github.com/intel/llvm -b sycl
+#mkdir $SYCL_HOME/build
+#cd $SYCL_HOME/build
+
+#cmake -DCMAKE_BUILD_TYPE=Release -DLLVM_TARGETS_TO_BUILD="X86" \
+#-DLLVM_EXTERNAL_PROJECTS="llvm-spirv;sycl";opencl-aot \
+#-DLLVM_ENABLE_PROJECTS="clang;llvm-spirv;sycl;opencl-aot" \
+#-DLLVM_EXTERNAL_SYCL_SOURCE_DIR=$SYCL_HOME/llvm/sycl \
+#-DLLVM_EXTERNAL_LLVM_SPIRV_SOURCE_DIR=$SYCL_HOME/llvm/llvm-spirv \
+#$SYCL_HOME/llvm/llvm
+
+#make -j 2 sycl-toolchain opencl-aot
+
+#wget https://github.com/intel/compute-runtime/releases/20.05.15524
+
+#git clone https://github.com/intel/tbb.git
+
+
 # ====================
 
 # Manually select pull-down menu Devices -> Install Guest additions
