@@ -61,7 +61,8 @@
 
 # git clone https://github.com/essentialsofparallelcomputing/Chapter12.git
 
-# ./README.virtualbox
+# Run the virtual box script
+# Chapter12/README.virtualbox
 
 # ====
 sudo apt-get update
@@ -103,6 +104,7 @@ sudo usermod -a -G video $USER
 
 # triSYCL
 
+sudo apt-get install doxygen
 git clone https://github.com/triSYCL/triSYCL.git
 
 # computeCPP
