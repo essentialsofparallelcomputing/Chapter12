@@ -82,6 +82,10 @@ sudo apt-get install virtualbox-guest-additions-iso -y
 #     reboot and test copy paste
 # Copy on Mac is command-C and paste in Ubuntu is shift-ctrl-v
 
+# OpenCL packages
+
+sudo apt install clinfo ocl-icd-libopencl1 ocl-icd
+
 pushd /tmp
 wget https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS-2023.PUB
 sudo apt-key add GPG-PUB-KEY-INTEL-SW-PRODUCTS-2023.PUB
