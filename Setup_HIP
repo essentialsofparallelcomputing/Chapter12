@@ -1,0 +1,6 @@
+For Debian compatible systems, the following will install all the ROCm tools including the HIP software.
+
+wget https://github.com/GPUOpen-Tools/CodeXL/releases/download/v2.6/ codexl_2.6-302_amd64.deb
+sudo dpkg -i codexl_2.6-302_amd64.deb
+sudo apt-get -f install -y
+

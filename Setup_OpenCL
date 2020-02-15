@@ -1,0 +1,16 @@
+The installation of OpenCL can be tricky. It is also constantly changing for each vendor. Please check for current instructions for your particular GPU model. The following instructions will give you an idea of the process.
+
+Often the OpenCL installation will be bundled with CUDA on Nvidia devices. Check those CUDA directories first before installing. If not there, then install OpenCL for Nvidia with the virtual package.
+
+sudo apt install ocl-icd-libopencl1 ocl-icd opencl-headers
+     or directly install the Nvidia packages
+sudo apt ocl-icd-libopencl1 nvidia-opencl-340 nvidia-compute-390
+
+The AMD installation is getting easier with the ROCm suite. To install OpenCL for AMD, you can just install OpenCL with the following or install the full ROCm suite as given in section 12.2.3.
+
+sudo apt-get install rocm-opencl-dev
+
+You may need to add yourself to the video user’s group
+
+sudo usermod -a -G video $LOGNAME
+

@@ -1,0 +1,16 @@
+Check for the latest instructions from the CUDA installation guide https://docs.nvidia.com/cuda/cuda-installation-guide-linux/. You should use your system’s package manager where possible. For Ubuntu, the instructions should be something like
+
+wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/
+       cuda-repo-ubuntu1804_10.2.89-1_amd64.deb
+sudo dpkg -i cuda-repo-ubuntu1804_10.2.89-1_amd64.deb
+sudo apt-key add /var/cuda-repo-10.2.89-1_amd64/7fa2af90.pub
+sudo apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/
+       ubuntu1804/x86_64/7fa2af90.pub
+sudo apt-get update
+sudo apt-get install cuda
+
+Then set up your environment by adding the following to your .bash_profile.
+export PATH=/usr/local/cuda-10.2/bin:/usr/local/cuda-10.2/NsightCompute-2019.1:${PATH}
+export LD_LIBRARY_PATH=/usr/local/cuda-10.2/lib64\
+                         ${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
+

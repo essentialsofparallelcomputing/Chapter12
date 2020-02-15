@@ -2,9 +2,9 @@
 __global__ void StreamTriad(
                const int n,
                const double scalar,
-               const double *a, 
-               const double *b, 
-                     double *c) 
+               const double *a,
+               const double *b,
+                     double *c)
 {
    int i = blockIdx.x*blockDim.x+threadIdx.x;
 
