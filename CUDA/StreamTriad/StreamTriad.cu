@@ -1,13 +1,11 @@
-#include <stdio.h>
-#include <sys/time.h>
-extern "C" {
-   #include "timer.h"
-}
-
-#define NTIMES 16
-
 // CUDA kernel version of Stream Triad
-__global__ void StreamTriad(int n, double scalar, double *a, double *b, double *c){
+__global__ void StreamTriad(
+               const int n,
+               const double scalar,
+               const double *a, 
+               const double *b, 
+                     double *c) 
+{
    int i = blockIdx.x*blockDim.x+threadIdx.x;
 
    // Protect from going out-of-bounds
@@ -15,6 +13,14 @@ __global__ void StreamTriad(int n, double scalar, double *a, double *b, double *
 
    c[i] = a[i] + scalar*b[i];
 }
+
+#include <stdio.h>
+#include <sys/time.h>
+extern "C" {
+   #include "timer.h"
+}
+
+#define NTIMES 16
 
 int main(int argc, char *argv[]){
    struct timespec tkernel, ttotal;
