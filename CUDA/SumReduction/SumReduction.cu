@@ -1,9 +1,3 @@
-#include <stdio.h>
-#include <sys/time.h>
-extern "C" {
-   #include "timer.h"
-}
-
 #define MIN_REDUCE_SYNC_SIZE warpSize
 
 __device__ void reduction_sum_within_block(double  *spad)
@@ -28,7 +22,7 @@ __device__ void reduction_sum_within_block(double  *spad)
 
 __global__ void reduce_sum_stage1of2(
                  const int      isize,      // 0  Total number of cells.
-                       double  *array,      // 1
+                 const double  *array,      // 1
                        double  *blocksum,   // 2
                        double  *redscratch) // 3
 {
@@ -83,6 +77,11 @@ __global__ void reduce_sum_stage2of2(
    }
 }
 
+#include <stdio.h>
+#include <sys/time.h>
+extern "C" {
+   #include "timer.h"
+}
 
 int main(int argc, char *argv[]){
 
