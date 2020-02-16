@@ -29,15 +29,14 @@ int main(int argc, char * argv[])
     Sycl::buffer<double,1> dev_b { b.data(), Sycl::range<1>(b.size()) };
     Sycl::buffer<double,1> dev_c { c.data(), Sycl::range<1>(c.size()) };
 
-    Queue.submit([&](sycl::handler& Handler) {
+    Queue.submit([&](sycl::handler& CommandGroup) {
 
-       auto a = dev_a.get_access<Sycl::access::mode::read>(Handler);
-       auto b = dev_b.get_access<Sycl::access::mode::read>(Handler);
-       auto c = dev_c.get_access<Sycl::access::mode::write>(Handler);
+       auto a = dev_a.get_access<Sycl::access::mode::read>(CommandGroup);
+       auto b = dev_b.get_access<Sycl::access::mode::read>(CommandGroup);
+       auto c = dev_c.get_access<Sycl::access::mode::write>(CommandGroup);
 
-       Handler.parallel_for<class StreamTriad>( Sycl::range<1>{nsize}, [=] (Sycl::id<1> it) {
-           const int i = it[0];
-           c[i] = a[i] + scalar * b[i];
+       CommandGroup.parallel_for<class StreamTriad>( Sycl::range<1>{nsize}, [=] (Sycl::id<1> it) {
+           c[it] = a[it] + scalar * b[it];
        });
     });
     Queue.wait();
