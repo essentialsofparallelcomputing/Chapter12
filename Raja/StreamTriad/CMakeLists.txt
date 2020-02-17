@@ -1,11 +1,10 @@
-cmake_minimum_required (VERSION 3.8)
+cmake_minimum_required (VERSION 3.0)
 project (StreamTriad)
 
-include(blt/SetupBLT.cmake)
-
 find_package(Raja REQUIRED)
+find_package(OpenMP REQUIRED)
 
-blt_add_executable(NAME StreamTriad SOURCES StreamTTriad.cc timer.c)
-
-#add_executable(StreamTriad StreamTriad.cc timer.c)
-#target_link_libraries(StreamTriad Raja::raja)
+add_executable(StreamTriad StreamTriad.cc)
+target_link_libraries(StreamTriad PUBLIC RAJA)
+set_target_properties(StreamTriad PROPERTIES COMPILE_FLAGS ${OpenMP_CXX_FLAGS})
+set_target_properties(StreamTriad PROPERTIES LINK_FLAGS "${OpenMP_CXX_FLAGS}")

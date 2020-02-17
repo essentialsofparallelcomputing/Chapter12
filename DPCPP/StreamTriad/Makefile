@@ -3,7 +3,7 @@ CXXFLAGS         = -std=c++17 -fsycl -O3
 
 all: StreamTriad
 
-StreamTriad: StreamTriad.o timer.o
+StreamTriad: StreamTriad.o
 	$(CXX) $(CXXFLAGS) $^ -o $@
 
 clean:

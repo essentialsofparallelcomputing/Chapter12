@@ -1,73 +1,44 @@
+#include <chrono>
 #include "RAJA/RAJA.hpp"
 
 using namespace std;
 
 int main(int RAJA_UNUSED_ARG(argc), char **RAJA_UNUSED_ARG(argv[]))
 {
+   std::chrono::high_resolution_clock::time_point t1, t2;
+   std::cout << "Running Raja Stream Triad\n";
 
-  std::cout << "\n\nRAJA daxpy example...\n";
-
-// Define vector length
-  const int N = 1000000;
+   const int nsize = 1000000;
 
 // Allocate and initialize vector data.
-  double* a0 = new double[N];
-  double* aref = new double[N];
-
-  double* ta = new double[N];
-  double* tb = new double[N];
+   double scalar = 3.0;
+   double* a = new double[nsize];
+   double* b = new double[nsize];
+   double* c = new double[nsize];
   
-  double c = 3.14159;
-  
-  for (int i = 0; i < N; i++) {
-    a0[i] = 1.0;
-    tb[i] = 2.0;
-  }
+   for (int i = 0; i < nsize; i++) {
+     a[i] = 1.0;
+     b[i] = 2.0;
+   }
 
-//
-// Declare and set pointers to array data. 
-// We reset them for each daxpy version so that 
-// they all look the same.
-//
+   t1 = std::chrono::high_resolution_clock::now();
 
-  double* a = ta;
-  double* b = tb;
+   RAJA::forall<RAJA::omp_parallel_for_exec>(RAJA::RangeSegment(0, nsize), [=] (int i) {
+     c[i] = a[i] + scalar * b[i];
+   });
 
+   t2 = std::chrono::high_resolution_clock::now();
 
-//----------------------------------------------------------------------------//
+   // check results and print errors if found. limit to only 10 errors per iteration
+   int icount = 0;
+   for (int i=0; i<nsize && icount < 10; i++){
+      if (c[i] != 1.0 + 3.0*2.0) {
+         printf("Error with result c[%d]=%lf\n",i,c[i]);
+         icount++;
+      }
+   }
 
-  std::cout << "\n Running C-version of daxpy...\n";
-   
-  std::memcpy( a, a0, N * sizeof(double) );  
-
-  for (int i = 0; i < N; ++i) {
-    a[i] += b[i] * c;
-  }
-
-  std::memcpy( aref, a, N* sizeof(double) ); 
-
-//----------------------------------------------------------------------------//
-
-//
-// In the following, we show a RAJA version
-// of the daxpy operation and how it can
-// be run differently by choosing different
-// RAJA execution policies. 
-//
-// Note that the only thing that changes in 
-// these versions is the execution policy.
-// To implement these cases using the 
-// programming model choices directly, would
-// require unique changes for each.
-//
-  
-//----------------------------------------------------------------------------//
-
-  std::cout << "\n Running RAJA sequential daxpy...\n";
-   
-  std::memcpy( a, a0, N * sizeof(double) );  
-
-  RAJA::forall<RAJA::seq_exec>(RAJA::RangeSegment(0, N), [=] (int i) {
-    a[i] += b[i] * c;
-  });
-
+   if (icount == 0) cout << "Program completed without error." << endl;
+   double time1 = std::chrono::duration_cast<std::chrono::duration<double> >(t2 - t1).count();
+   cout << "Runtime is  " << time1*1000.0 << " msecs " << endl;
+}
