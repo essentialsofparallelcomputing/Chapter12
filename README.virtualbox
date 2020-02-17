@@ -154,11 +154,6 @@ git clone https://github.com/triSYCL/triSYCL.git
 
 # Kokkos
 
-#sudo apt-get install curl
-#git clone https://github.com/spack/spack
-#source spack/share/spack/setup-env.sh
-#spack install kokkos +openmp
-
 git clone https://github.com/kokkos/kokkos Kokkos_build
 pushd Kokkos_build
 mkdir build && cd build
@@ -181,8 +176,6 @@ export Raja_DIR=${HOME}/Raja/share/raja/cmake
 
 # Bash profile
 #source /opt/intel/inteloneapi/setvars.sh
-#export PATH=${HOME}/spack/bin:${PATH}
-#source ~/spack/share/spack/setup-env.sh
 
 #export Kokkos_DIR=${HOME}/Kokkos/lib/cmake/Kokkos
 #export Raja_DIR=${HOME}/Raja/share/raja/cmake

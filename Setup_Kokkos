@@ -1,0 +1,11 @@
+# Kokkos
+
+git clone https://github.com/kokkos/kokkos Kokkos_build
+pushd Kokkos_build
+mkdir build && cd build
+cmake .. -DCMAKE_INSTALL_PREFIX=${HOME}/Kokkos -DKokkos_ENABLE_OPENMP=On
+make install
+popd
+
+export Kokkos_DIR=${HOME}/Kokkos/lib/cmake/Kokkos
+
