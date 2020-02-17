@@ -166,7 +166,6 @@ cmake .. -DCMAKE_INSTALL_PREFIX=${HOME}/Kokkos -DKokkos_ENABLE_OPENMP=On
 make install
 popd
 
-#export KOKKOS_PATH=${HOME}/Kokkos/Kokkos
 export Kokkos_DIR=${HOME}/Kokkos/lib/cmake/Kokkos
 
 # Raja
@@ -174,7 +173,7 @@ export Kokkos_DIR=${HOME}/Kokkos/lib/cmake/Kokkos
 git clone --recursive https://github.com/llnl/raja.git Raja_build
 pushd Raja_build
 mkdir build && cd build
-cmake ../ -DCMAKE_INSTALL_PREFIX=${HOME}/Raja_Install
+cmake ../ -DCMAKE_INSTALL_PREFIX=${HOME}/Raja
 make install
 popd
 
