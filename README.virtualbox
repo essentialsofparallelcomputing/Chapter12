@@ -152,6 +152,33 @@ git clone https://github.com/triSYCL/triSYCL.git
 
 #git clone https://github.com/intel/tbb.git
 
+# Kokkos
+
+#sudo apt-get install curl
+#git clone https://github.com/spack/spack
+#source spack/share/spack/setup-env.sh
+#spack install kokkos +openmp
+
+git clone https://github.com/kokkos/kokkos Kokkos_build
+pushd Kokkos_build
+mkdir build && cd build
+cmake .. -DCMAKE_INSTALL_PREFIX=${HOME}/Kokkos -DKokkos_ENABLE_OPENMP=On
+make install
+popd
+
+#export KOKKOS_PATH=${HOME}/Kokkos/Kokkos
+export Kokkos_DIR=${HOME}/Kokkos/lib/cmake/Kokkos
+
+# Raja
+
+git clone --recursive https://github.com/llnl/raja.git Raja_build
+pushd Raja_build
+mkdir build && cd build
+cmake ../ -DCMAKE_INSTALL_PREFIX=${HOME}/Raja_Install
+make install
+popd
+
+export Raja_DIR=${HOME}/Raja/share/raja/cmake
 
 # ====================
 
