@@ -180,6 +180,14 @@ popd
 
 export Raja_DIR=${HOME}/Raja/share/raja/cmake
 
+# Bash profile
+#source /opt/intel/inteloneapi/setvars.sh
+#export PATH=${HOME}/spack/bin:${PATH}
+#source ~/spack/share/spack/setup-env.sh
+
+#export Kokkos_DIR=${HOME}/Kokkos/lib/cmake/Kokkos
+#export Raja_DIR=${HOME}/Raja/share/raja/cmake
+
 # ====================
 
 # Manually select pull-down menu Devices -> Install Guest additions
