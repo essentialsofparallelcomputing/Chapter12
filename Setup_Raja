@@ -1,0 +1,11 @@
+# Raja
+
+git clone --recursive https://github.com/llnl/raja.git Raja_build
+pushd Raja_build
+mkdir build && cd build
+cmake ../ -DCMAKE_INSTALL_PREFIX=${HOME}/Raja
+make install
+popd
+
+export Raja_DIR=${HOME}/Raja/share/raja/cmake
+

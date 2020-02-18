@@ -5,8 +5,8 @@ using namespace std;
 
 int main(int RAJA_UNUSED_ARG(argc), char **RAJA_UNUSED_ARG(argv[]))
 {
-   std::chrono::high_resolution_clock::time_point t1, t2;
-   std::cout << "Running Raja Stream Triad\n";
+   chrono::high_resolution_clock::time_point t1, t2;
+   cout << "Running Raja Stream Triad\n";
 
    const int nsize = 1000000;
 
@@ -21,13 +21,13 @@ int main(int RAJA_UNUSED_ARG(argc), char **RAJA_UNUSED_ARG(argv[]))
      b[i] = 2.0;
    }
 
-   t1 = std::chrono::high_resolution_clock::now();
+   t1 = chrono::high_resolution_clock::now();
 
    RAJA::forall<RAJA::omp_parallel_for_exec>(RAJA::RangeSegment(0, nsize), [=] (int i) {
      c[i] = a[i] + scalar * b[i];
    });
 
-   t2 = std::chrono::high_resolution_clock::now();
+   t2 = chrono::high_resolution_clock::now();
 
    // check results and print errors if found. limit to only 10 errors per iteration
    int icount = 0;
@@ -39,6 +39,6 @@ int main(int RAJA_UNUSED_ARG(argc), char **RAJA_UNUSED_ARG(argv[]))
    }
 
    if (icount == 0) cout << "Program completed without error." << endl;
-   double time1 = std::chrono::duration_cast<std::chrono::duration<double> >(t2 - t1).count();
+   double time1 = chrono::duration_cast<chrono::duration<double> >(t2 - t1).count();
    cout << "Runtime is  " << time1*1000.0 << " msecs " << endl;
 }

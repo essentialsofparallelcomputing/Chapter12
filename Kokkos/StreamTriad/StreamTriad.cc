@@ -9,14 +9,14 @@ int main (int argc, char *argv[])
       Kokkos::Timer timer;
       double time1;
 
+      double scalar = 3.0;
       size_t nsize = 1000000;
+      Kokkos::View<double *> a( "a", nsize);
+      Kokkos::View<double *> b( "b", nsize);
       Kokkos::View<double *> c( "c", nsize);
 
       cout << "StreamTriad with " << nsize << " elements" << endl;
 
-      Kokkos::View<double *> a( "a", nsize);
-      Kokkos::View<double *> b( "b", nsize);
-      double scalar = 3.0;
       Kokkos::parallel_for(nsize, KOKKOS_LAMBDA (int i) {
          a[i] = 1;
       });
