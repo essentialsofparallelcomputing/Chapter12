@@ -4,18 +4,18 @@ using namespace std;
 
 int main (int argc, char *argv[])
 {
-   Kokkos::Timer timer;
-   double time1;
-
-   size_t nsize = 1000000;
-   double *c = new double[nsize];
-
-   cout << "StreamTriad with " << nsize << " elements" << endl;
-
    Kokkos::initialize(argc, argv);{
 
-      double *a = new double[nsize];
-      double *b = new double[nsize];
+      Kokkos::Timer timer;
+      double time1;
+
+      size_t nsize = 1000000;
+      Kokkos::View<double *> c( "c", nsize);
+
+      cout << "StreamTriad with " << nsize << " elements" << endl;
+
+      Kokkos::View<double *> a( "a", nsize);
+      Kokkos::View<double *> b( "b", nsize);
       double scalar = 3.0;
       Kokkos::parallel_for(nsize, KOKKOS_LAMBDA (int i) {
          a[i] = 1;
@@ -31,18 +31,18 @@ int main (int argc, char *argv[])
       });
 
       time1 = timer.seconds();
+
+      for (int i=0, icount=0; i<nsize && icount < 10; i++){
+         if (c[i] != 1.0 + 3.0*2.0) {
+            cout << "Error with result c[" << i << "]=" << c[i] << endl;
+            icount++;
+         }
+      }
+
+      cout << "Program completed without error." << endl;
+      cout << "Runtime is  " << time1*1000.0 << " msecs " << endl;
+
    }
    Kokkos::finalize();
-
-   for (int i=0, icount=0; i<nsize && icount < 10; i++){
-      if (c[i] != 1.0 + 3.0*2.0) {
-         cout << "Error with result c[" << i << "]=" << c[i] << endl;
-         icount++;
-      }
-   }
-
-   cout << "Program completed without error." << endl;
-   cout << "Runtime is  " << time1*1000.0 << " msecs " << endl;
-
    return 0;
 }
