@@ -18,10 +18,10 @@ int main (int argc, char *argv[])
       cout << "StreamTriad with " << nsize << " elements" << endl;
 
       Kokkos::parallel_for(nsize, KOKKOS_LAMBDA (int i) {
-         a[i] = 1;
+         a[i] = 1.0;
       });
       Kokkos::parallel_for(nsize, KOKKOS_LAMBDA (int i) {
-         b[i] = 2;
+         b[i] = 2.0;
       });
 
       timer.reset();
