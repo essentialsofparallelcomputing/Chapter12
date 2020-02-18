@@ -32,14 +32,15 @@ int main (int argc, char *argv[])
 
       time1 = timer.seconds();
 
-      for (int i=0, icount=0; i<nsize && icount < 10; i++){
+      icount = 0;
+      for (int i=0; i<nsize && icount < 10; i++){
          if (c[i] != 1.0 + 3.0*2.0) {
             cout << "Error with result c[" << i << "]=" << c[i] << endl;
             icount++;
          }
       }
 
-      cout << "Program completed without error." << endl;
+      if (icount == 0) cout << "Program completed without error." << endl;
       cout << "Runtime is  " << time1*1000.0 << " msecs " << endl;
 
    }
