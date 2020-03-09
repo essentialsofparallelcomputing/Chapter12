@@ -1,0 +1,10 @@
+One of the barriers for GPU programming is access to hardware and getting it set up 
+properly. If you don’t have local hardware available, you can try out some free 
+trial ($200-300 credit) cloud services that set up an HPC cluster with Nvidia GPUs at Fluid Numerics Google Cloud Platform.
+
+Fluid-Slurm Google Cloud Cluster
+https://console.cloud.google.com/marketplace/details/fluid-cluster-ops/fluid-slurm-gcp
+
+For testing out Intel GPUs, Intel has set up cloud services for trial services.
+
+Intel cloud version of oneAPI and DPCPP https://software.intel.com/en-us/oneapi -- register to use. 

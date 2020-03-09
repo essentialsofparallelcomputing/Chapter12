@@ -1,7 +1,11 @@
+# These are instructions to setup a Ubuntu virtual machine for the examples in
+# this chapter. The first part of the instructions must be done manually. The
+# last half can be done by exiting this file as a script as instructed.
 
 # Download VirtualBox and install
 
 # Download Ubuntu desktop install and save on local disk [ubuntu-18.04.2-desktop-amd64.iso]
+# Download VBoxGuestAdditions.iso
 
 # Setup new machine
 
@@ -23,11 +27,6 @@
 # Start Ubuntu virtual machine (Green arrow, start)
 
 # Select iso file saved earlier [ubuntu-18.04.2-desktop-amd64.iso]
-
-# Switch to Scaled View. It is under View menu or use Right-Command C to switch back and forth
-# Once the guest additions is installed, you can set a higher resolution display with the
-#   view menu pull-down at the top menu bar
-# Main menu bar is hidden (access it by right command home (left command))
 
 # Select Install Ubuntu
 
@@ -56,23 +55,10 @@
 
 # click through whats new
 
-# select dots at bottom left and terminal
+# select dots at bottom left and start up a terminal
 
-# sudo apt install git
-
-
-# git clone https://github.com/essentialsofparallelcomputing/Chapter12.git
-
-# Run the virtual box script
-# Chapter12/README.virtualbox
-
-# ====
-sudo apt-get update
-
-sudo apt install build-essential dkms -y
-sudo apt-get install virtualbox-guest-additions-iso -y
-
-# if does not automatically run, go to file manager and click on the CD. Choose Open Autorun Prompt
+# sudo apt install build-essential dkms git -y
+# Now go up to devices and insert virtualbox-guest-additions-iso
 
 # Make virtualbox window active and select devices from window menus at top of screen
 #     Shared Clipboard --> bidirectional
@@ -81,6 +67,16 @@ sudo apt-get install virtualbox-guest-additions-iso -y
 #     Remove optical disk -- from desktop, right click and eject or from devices-->optical disk-->remove disk from virtual drive
 #     reboot and test copy paste
 # Copy on Mac is command-C and paste in Ubuntu is shift-ctrl-v
+
+# Reboot to get cut and paste and screen size fixed
+
+# git clone https://github.com/essentialsofparallelcomputing/Chapter12.git
+
+# Run this README as a script to install rest of packages
+#    Chapter12/README.virtualbox
+
+# ====
+sudo apt-get update
 
 # CUDA
  
