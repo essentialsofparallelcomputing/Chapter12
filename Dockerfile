@@ -41,6 +41,11 @@ RUN apt-get update && \
 
 #apt-get install intel-opencl && \
 
+RUN apt-get update && \
+    apt-get install -y libnuma-dev && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
 RUN wget -qO - http://repo.radeon.com/rocm/apt/debian/rocm.gpg.key | apt-key add -
 RUN echo 'deb [arch=amd64] http://repo.radeon.com/rocm/apt/debian/ xenial main' >> /etc/apt/sources.list.d/rocm.list
 RUN apt-get update && \
