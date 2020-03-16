@@ -41,6 +41,13 @@ RUN apt-get update && \
 
 #apt-get install intel-opencl && \
 
+RUN wget -qO - http://repo.radeon.com/rocm/apt/debian/rocm.gpg.key | apt-key add -
+RUN echo 'deb [arch=amd64] http://repo.radeon.com/rocm/apt/debian/ xenial main' >> /etc/apt/sources.list.d/rocm.list
+RUN apt-get update && \
+    apt-get install -y rocm-opencl-dev rocm-dkms && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
 RUN git clone https://github.com/triSYCL/triSYCL.git
 
 RUN git clone https://github.com/kokkos/kokkos Kokkos_build && mkdir Kokkos_build/build
@@ -57,8 +64,11 @@ ENV Kokkos_DIR=/Project/Kokkos/lib/cmake/Kokkos
 ENV Raja_DIR=/Project/Raja/share/raja/cmake
 ENV PATH=/usr/local/cuda-10.2/bin:/usr/local/cuda-10.2/NsightCompute-2019.1${PATH:+:${PATH}}
 RUN source /opt/intel/inteloneapi/setvars.sh
+ENV PATH=${PATH}:/opt/rocm/bin:/opt/rocm/profiler/bin:/opt/rocm/opencl/bin/x86_64
 
 RUN groupadd -r chapter12 && useradd -r -s /bin/false -g chapter12 chapter12
+
+RUN usermod -a -G video chapter12
 
 WORKDIR /chapter12
 RUN chown -R chapter12:chapter12 /chapter12
@@ -67,11 +77,3 @@ USER chapter12
 RUN git clone --recursive https://github.com/essentialsofparallelcomputing/Chapter12.git
 
 ENTRYPOINT ["bash"]
-
-
-###RUN echo "PATH=/usr/local/cuda-10.2/bin:/usr/local/cuda-10.2/NsightCompute-2019.1:${PATH}" >> /home/chapter12/.bash_profile
-###RUN echo "export LD_LIBRARY_PATH=/usr/local/cuda-10.2/lib64 ${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}" >> /home/chapter12/.bash_profile
-###RUN echo "source /opt/intel/inteloneapi/setvars.sh" >> /home/chapter12/.bash_profile
-###RUN echo "deb [trusted=yes arch=amd64] https://repositories.intel.com/graphics/ubuntu bionic main" >> /etc/apt/sources.list.d/intel-graphics.list
-###RUN apt-get update
-###RUN apt-get install -y intel-opencl
