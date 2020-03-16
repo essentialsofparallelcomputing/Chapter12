@@ -68,15 +68,14 @@ SHELL ["/bin/bash", "-c"]
 ENV Kokkos_DIR=/Project/Kokkos/lib/cmake/Kokkos
 ENV Raja_DIR=/Project/Raja/share/raja/cmake
 ENV PATH=/usr/local/cuda-10.2/bin:/usr/local/cuda-10.2/NsightCompute-2019.1${PATH:+:${PATH}}
-RUN source /opt/intel/inteloneapi/setvars.sh
 ENV PATH=${PATH}:/opt/rocm/bin:/opt/rocm/profiler/bin:/opt/rocm/opencl/bin/x86_64
 
-RUN groupadd -r chapter12 && useradd -r -s /bin/false -g chapter12 chapter12
+RUN groupadd -r chapter12 && useradd -m -s /bin/bash -g chapter12 chapter12
 
 RUN usermod -a -G video chapter12
 
-WORKDIR /chapter12
-RUN chown -R chapter12:chapter12 /chapter12
+WORKDIR /home/chapter12
+RUN chown -R chapter12:chapter12 /home/chapter12
 USER chapter12
 
 RUN git clone --recursive https://github.com/essentialsofparallelcomputing/Chapter12.git
