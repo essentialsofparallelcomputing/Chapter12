@@ -69,8 +69,10 @@ ENV Kokkos_DIR=/Project/Kokkos/lib/cmake/Kokkos
 ENV Raja_DIR=/Project/Raja/share/raja/cmake
 ENV PATH=/usr/local/cuda-10.2/bin:/usr/local/cuda-10.2/NsightCompute-2019.1${PATH:+:${PATH}}
 ENV PATH=${PATH}:/opt/rocm/bin:/opt/rocm/profiler/bin:/opt/rocm/opencl/bin/x86_64
+ENV PATH=${PATH}:/opt/intel/inteloneapi/compiler/2021.1-beta04/linux/bin
+ENV LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/opt/intel/inteloneapi/compiler/2021.1-beta04/linux/compiler/lib/intel64_lin:/opt/intel/inteloneapi/compiler/2021.1-beta04/linux/lib
 
-RUN groupadd -r chapter12 && useradd -m -s /bin/bash -g chapter12 chapter12
+RUN groupadd chapter12 && useradd -m -s /bin/bash -g chapter12 chapter12
 
 RUN usermod -a -G video chapter12
 

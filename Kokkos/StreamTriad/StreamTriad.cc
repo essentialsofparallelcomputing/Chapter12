@@ -32,7 +32,7 @@ int main (int argc, char *argv[])
 
       time1 = timer.seconds();
 
-      icount = 0;
+      int icount = 0;
       for (int i=0; i<nsize && icount < 10; i++){
          if (c[i] != 1.0 + 3.0*2.0) {
             cout << "Error with result c[" << i << "]=" << c[i] << endl;
