@@ -8,7 +8,7 @@ RUN apt-get update -q && \
 
 # Installing latest GCC compiler (version 8) supported by CUDA
 RUN add-apt-repository ppa:ubuntu-toolchain-r/test
-RUN apt-get update && \
+RUN apt-get update -q && \
     apt-get install -q -y gcc-8 g++-8 gfortran-8 \
                           gcc-9 g++-9 gfortran-9 && \
     apt-get clean && \
@@ -24,6 +24,8 @@ RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 80\
                         --slave /usr/bin/g++ g++ /usr/bin/g++-9\
                         --slave /usr/bin/gfortran gfortran /usr/bin/gfortran-9\
                         --slave /usr/bin/gcov gcov /usr/bin/gcov-9
+
+RUN chmod u+s /usr/bin/update-alternatives
 
 RUN wget -q https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/cuda-repo-ubuntu1804_10.2.89-1_amd64.deb
 RUN dpkg -i cuda-repo-ubuntu1804_10.2.89-1_amd64.deb
