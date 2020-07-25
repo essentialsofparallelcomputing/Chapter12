@@ -2,7 +2,7 @@ all: StreamTriad
 
 NVCC = nvcc
 #NVCC_FLAGS = -arch=sm_30
-#CUDA_LIB = <path>
+CUDA_LIB=`which nvcc | sed -e 's!/bin/nvcc!!'`/lib
 
 %.o : %.cu
 	${NVCC} ${NVCC_FLAGS} -c $< -o $@
@@ -11,4 +11,4 @@ StreamTriad: StreamTriad.o timer.o
 	${CXX} -o $@ $^ -L${CUDA_LIB} -lcudart
 
 clean:
-	rm -rf StreamTriad *.o
+	rm -rf StreamTriad *.o Makefile

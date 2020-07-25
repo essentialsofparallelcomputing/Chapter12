@@ -6,7 +6,7 @@ ALL: StreamTriad_CUDA_Simple StreamTriad_CUDA_old StreamTriad_CUDA_new clean
 StreamTriad_CUDA_Simple: CUDA/StreamTriad/StreamTriad
 
 CUDA/StreamTriad/StreamTriad:
-	cd CUDA/StreamTriad && ln -s Makefile.simple Makefile && make && ./StreamTriad
+	cd CUDA/StreamTriad && rm -f Makefile && ln -s Makefile.simple Makefile && make && ./StreamTriad
 	make clean
 
 StreamTriad_CUDA_old: CUDA/StreamTriad/oldbuild/StreamTriad

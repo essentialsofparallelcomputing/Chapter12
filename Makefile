@@ -1,13 +1,13 @@
-ALL: Makefile.CUDA
+ALL: Makefile.CUDA SumReductionRevealed
 
-.PHONY: Makefile.CUDA
+.PHONY: Makefile.CUDA SumReductionRevealed
 
 Makefile.CUDA:
 	make -f ./Makefile.CUDA
 
 SumReductionRevealed:
-	cd CUDA/SumReductionRevealed && mkdir build && cd build && cmake .. && make && ./SumReductionRevealed
+	cd CUDA/SumReductionRevealed && make && ./SumReductionRevealed
 
 clean:
+	cd CUDA/SumReductionRevealed && make clean
 	make -f ./Makefile.CUDA clean
-	cd CUDA/SumReductionRevealed && rm -rf build
