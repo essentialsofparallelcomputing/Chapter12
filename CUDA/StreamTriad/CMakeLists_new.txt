@@ -21,4 +21,3 @@ endif(APPLE)
 # Cleanup
 add_custom_target(distclean COMMAND rm -rf CMakeCache.txt CMakeFiles
                   Makefile cmake_install.cmake StreamTriad.dSYM ipo_out.optrpt)
-
