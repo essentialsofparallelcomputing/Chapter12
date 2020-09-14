@@ -13,4 +13,3 @@ __kernel void StreamTriad(
 
    c[i] = a[i] + scalar*b[i];
 }
-
