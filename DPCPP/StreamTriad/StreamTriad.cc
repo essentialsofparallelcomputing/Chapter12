@@ -18,7 +18,7 @@ int main(int argc, char * argv[])
 
    t1 = chrono::high_resolution_clock::now();
 
-   Sycl::queue Queue(sycl::default_selector{});
+   Sycl::queue Queue(sycl::cpu_selector{});
 
    const double scalar = 3.0;
 
