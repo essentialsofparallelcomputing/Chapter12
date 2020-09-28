@@ -1,0 +1,3 @@
+[submodule "Raja/StreamTriad/Raja_build"]
+	path = Raja/StreamTriad/Raja_build
+	url = https://github.com/llnl/raja.git
