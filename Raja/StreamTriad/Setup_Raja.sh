@@ -15,4 +15,6 @@ export Raja_DIR=${INSTALL_DIR}/share/raja/cmake
 
 mkdir build && cd build && cmake .. && make && ./StreamTriad
 
+make clean && make distclean
+
 cd .. && rm -rf build Raja
