@@ -91,7 +91,7 @@ int main(int argc, char *argv[]){
 
    for (int i = 0; i<nsize; i++){
      //x[i] = rand()*100.0;
-     x[i] = 1.0;
+     x[i] = (double)i;
    }
 
    struct timespec tstart_cpu;
