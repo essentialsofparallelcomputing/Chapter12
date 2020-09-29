@@ -165,7 +165,7 @@ int main(int argc, char *argv[]){
       reduce_sum_stage2of2_revealed(1, blocksize, gridsize, array);//<<<gridsize, blocksize, blocksizebytes>>>(nsize, dev_total_sum, dev_redscratch);
    }
 
-   printf("Result -- total sum %lf \n",array[0]);
+   printf("Result -- total sum %d \n",array[0]);
 
    free(array);
 }
