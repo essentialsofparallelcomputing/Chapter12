@@ -1,7 +1,7 @@
 FROM ubuntu:20.04 AS builder
 WORKDIR /project
-ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get -qq update && \
+    DEBIAN_FRONTEND=noninteractive \
     apt-get -qq install -y cmake git vim gcc g++ gfortran software-properties-common \
             wget gnupg python3 xterm && \
     apt-get clean && \

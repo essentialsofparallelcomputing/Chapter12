@@ -1,16 +1,24 @@
-Check for the latest instructions from the CUDA installation guide https://docs.nvidia.com/cuda/cuda-installation-guide-linux/. You should use your system’s package manager where possible. For Ubuntu, the instructions should be something like
+# Nvidia GPU software for computation
+# See https://docs.nvidia.com/hpc-sdk/index.html for Nvidia install instructions
+# An older set of instructions are in the CUDA installation guide at 
+#   https://docs.nvidia.com/cuda/cuda-installation-guide-linux/. 
+# You should use your system’s package manager where possible.
 
-wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/
-       cuda-repo-ubuntu1804_10.2.89-1_amd64.deb
-sudo dpkg -i cuda-repo-ubuntu1804_10.2.89-1_amd64.deb
-sudo apt-key add /var/cuda-repo-10.2.89-1_amd64/7fa2af90.pub
-sudo apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/
-       ubuntu1804/x86_64/7fa2af90.pub
-sudo apt-get update
-sudo apt-get install cuda
+sudo wget --no-verbose https://developer.download.nvidia.com/hpc-sdk/20.9/nvhpc-20-9_20.9_amd64.deb
+sudo wget --no-verbose https://developer.download.nvidia.com/hpc-sdk/20.9/nvhpc-2020_20.9_amd64.deb
+sudo DEBIAN_FRONTEND=noninteractive \
+    apt-get install -y ./nvhpc-20-9_20.9_amd64.deb ./nvhpc-2020_20.9_amd64.deb
 
-Then set up your environment by adding the following to your .bash_profile.
-export PATH=/usr/local/cuda-10.2/bin:/usr/local/cuda-10.2/NsightCompute-2019.1:${PATH}
-export LD_LIBRARY_PATH=/usr/local/cuda-10.2/lib64\
-                         ${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
+sudo apt-get clean && sudo rm -rf /var/lib/apt/lists/*
 
+export NVARCH=Linux_x86_64
+export NVCOMPILERS=/opt/nvidia/hpc_sdk
+export MANPATH=$MANPATH:$NVCOMPILERS/$NVARCH/20.9/compilers/man
+export PATH=$NVCOMPILERS/$NVARCH/20.9/compilers/bin:$PATH
+
+#Put these in your dotfiles:
+
+echo "export NVARCH=`uname -s`_`uname -m`"
+echo "export NVCOMPILERS=/opt/nvidia/hpc_sdk"
+echo "export MANPATH=$MANPATH:$NVCOMPILERS/$NVARCH/20.9/compilers/man"
+echo "export PATH=$NVCOMPILERS/$NVARCH/20.9/compilers/bin:$PATH"
