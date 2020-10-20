@@ -134,6 +134,6 @@ ENV PATH=$NVCOMPILERS/$NVARCH/20.9/compilers/bin:$PATH
 RUN git clone --recursive https://github.com/essentialsofparallelcomputing/Chapter12.git
 
 WORKDIR /home/chapter12/Chapter12
-#RUN make
+RUN make
 
 ENTRYPOINT ["bash"]

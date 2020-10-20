@@ -156,7 +156,7 @@ int main(int argc, char *argv[]){
    }
    printf("\nSum of test data should be %d\n\n",isum);
 
-   printf("Calling first pass with gridsize %d blocksize %d blocksizebytes %d\n\n",
+   printf("Calling first pass with gridsize %ld blocksize %ld blocksizebytes %ld\n\n",
           gridsize,blocksize,blocksizebytes);
 
    reduce_sum_stage1of2_revealed(gridsize,blocksize,nsize,array);//<<<gridsize, blocksize, blocksizebytes>>>(nsize, dev_x, dev_total_sum, dev_redscratch);
