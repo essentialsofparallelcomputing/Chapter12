@@ -1,4 +1,5 @@
-ALL: Makefile.CUDA SumReductionRevealed
+#ALL: Makefile.CUDA SumReductionRevealed
+ALL: Makefile.CUDA
 
 .PHONY: Makefile.CUDA SumReductionRevealed
 
@@ -9,5 +10,5 @@ SumReductionRevealed:
 	cd CUDA/SumReductionRevealed && make && ./SumReductionRevealed
 
 clean:
-	cd CUDA/SumReductionRevealed && make clean
+	#cd CUDA/SumReductionRevealed && make clean
 	make -f ./Makefile.CUDA clean

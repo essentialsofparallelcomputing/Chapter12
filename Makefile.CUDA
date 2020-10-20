@@ -1,5 +1,4 @@
-ALL: StreamTriad_CUDA_Simple StreamTriad_CUDA_new clean
-#ALL: StreamTriad_CUDA_Simple StreamTriad_CUDA_old StreamTriad_CUDA_new clean
+ALL: StreamTriad_CUDA_Simple StreamTriad_CUDA_old StreamTriad_CUDA_new clean
 
 .PHONY: StreamTriad_CUDA_Simple CUDA/StreamTriad/StreamTriad StreamTriad_CUDA_old CUDA/StreamTriad/oldbuild/StreamTriad 
 .PHONY: StreamTriad_CUDA_new CUDA/StreamTriad/newbuild/StreamTriad SumReduction_CUDA CUDA/StreamTriad/build/StreamTriad clean

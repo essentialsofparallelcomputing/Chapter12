@@ -133,6 +133,8 @@ ENV PATH=$NVCOMPILERS/$NVARCH/20.9/compilers/bin:$PATH
 ENV NVIDIA_VISIBLE_DEVICES all
 #ENV NVIDIA_DRIVER_CAPABILITIES all
 ENV NVIDIA_DRIVER_CAPABILITIES compute,utility,display,video,graphics
+ENV LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/opt/nvidia/hpc_sdk/Linux_x86_64/20.9/cuda/11.0/targets/x86_64-linux/lib
+ENV LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/opt/nvidia/hpc_sdk/Linux_x86_64/20.9/cuda/11.0/targets/x86_64-linux/lib
 
 RUN git clone --recursive https://github.com/essentialsofparallelcomputing/Chapter12.git
 

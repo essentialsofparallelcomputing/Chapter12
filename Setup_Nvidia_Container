@@ -12,4 +12,4 @@ sudo apt-get update
 sudo apt-get install -y nvidia-docker2
 sudo systemctl restart docker
 #test nvidia gpu in a docker container
-sudo docker run --rm --gpus all nvidia/cuda:11.0-base nvidia-smi
+docker run --rm --gpus all nvidia/cuda:11.0-base nvidia-smi

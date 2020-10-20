@@ -1,4 +1,6 @@
 # Nvidia GPU software for computation
+# Use your package manager to install "third-party drivers" and update to latest that
+#   your card can handle
 # See https://docs.nvidia.com/hpc-sdk/index.html for Nvidia install instructions
 # An older set of instructions are in the CUDA installation guide at 
 #   https://docs.nvidia.com/cuda/cuda-installation-guide-linux/. 
