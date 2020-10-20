@@ -82,6 +82,8 @@ RUN wget --no-verbose https://developer.download.nvidia.com/hpc-sdk/20.9/nvhpc-2
     apt-get install -y ./nvhpc-20-9_20.9_amd64.deb ./nvhpc-2020_20.9_amd64.deb && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
+RUN nvidia-smi
+
 ## ROCm software installation
 #RUN apt-get -qq update && \
 #    apt-get -qq install -y libnuma-dev && \
