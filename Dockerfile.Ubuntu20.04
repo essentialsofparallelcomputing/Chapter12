@@ -130,6 +130,9 @@ ENV NVARCH=Linux_x86_64
 ENV NVCOMPILERS=/opt/nvidia/hpc_sdk
 ENV MANPATH=$MANPATH:$NVCOMPILERS/$NVARCH/20.9/compilers/man
 ENV PATH=$NVCOMPILERS/$NVARCH/20.9/compilers/bin:$PATH
+ENV NVIDIA_VISIBLE_DEVICES all
+#ENV NVIDIA_DRIVER_CAPABILITIES all
+ENV NVIDIA_DRIVER_CAPABILITIES compute,utility,display,video,graphics
 
 RUN git clone --recursive https://github.com/essentialsofparallelcomputing/Chapter12.git
 
