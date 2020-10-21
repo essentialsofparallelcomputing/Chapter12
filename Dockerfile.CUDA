@@ -6,20 +6,6 @@
 #
 #   https://hub.docker.com/r/essentialsofparallelcomputing/chapter2
 #
-# To get the GPU available during build
-# This does the same thing as --gpus all
-# sudo vi /etc/docker/daemon.json
-# sudo systemctl restart docker
-#{
-#    "runtimes": {
-#        "nvidia": {
-#            "path": "nvidia-container-runtime",
-#            "runtimeArgs": []
-#        }
-#    },
-#    "default-runtime": "nvidia"
-#}
-#
 # Author:
 # Bob Robey <brobey@earthlink.net>
 
@@ -45,7 +31,7 @@ ENV LC_ALL=$DOCKER_LANG.UTF-8
 
 RUN apt-get -qq update && \
     DEBIAN_FRONTEND=noninteractive \
-    apt-get -qq install -y cmake git vim gcc g++ gfortran && \
+    apt-get -qq install -y cmake git vim gcc g++ gfortran wget xterm libnuma1 && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # GCC compiler version 9 is latest compatible with CUDA 11.0 and is default for Ubuntu 20.04
@@ -72,43 +58,46 @@ RUN update-alternatives \
       --slave   /usr/bin/gcov     gcov     /usr/bin/gcov-10     && \
     chmod u+s /usr/bin/update-alternatives
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-        ocl-icd-libopencl1 \
-        clinfo \
-        ocl-icd-opencl-dev && \
+# Nvidia GPU software for computation
+# See https://docs.nvidia.com/hpc-sdk/index.html for Nvidia install instructions
+# An older set of instructions are in the CUDA installation guide at 
+#   https://docs.nvidia.com/cuda/cuda-installation-guide-linux/. 
+# You should use your system’s package manager where possible.
+
+RUN wget --no-verbose https://developer.download.nvidia.com/hpc-sdk/20.9/nvhpc-20-9_20.9_amd64.deb && \
+    wget --no-verbose https://developer.download.nvidia.com/hpc-sdk/20.9/nvhpc-2020_20.9_amd64.deb && \
+    DEBIAN_FRONTEND=noninteractive \
+    apt-get install -y ./nvhpc-20-9_20.9_amd64.deb ./nvhpc-2020_20.9_amd64.deb && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
-
-RUN mkdir -p /etc/OpenCL/vendors && \
-    echo "libnvidia-opencl.so.1" > /etc/OpenCL/vendors/nvidia.icd
-
-# nvidia-container-runtime
-ENV NVIDIA_VISIBLE_DEVICES all
-ENV NVIDIA_DRIVER_CAPABILITIES compute,utility
-# also could have graphics,video,display
-# compute -- CUDA and OpenCL
-# graphics -- OpenGL and Vulcan
-# utility -- nvidia-smi (default)
-# video -- video codec sdk
-# display -- X11 display
-# all -- enable all
 
 SHELL ["/bin/bash", "-c"]
 
 RUN groupadd chapter12 && useradd -m -s /bin/bash -g chapter12 chapter12
 
-#RUN usermod -aG video chapter12
+RUN usermod -a -G video chapter12
 
 WORKDIR /home/chapter12
 RUN chown -R chapter12:chapter12 /home/chapter12
 USER chapter12
 
+ENV NVARCH=Linux_x86_64
+ENV NVCOMPILERS=/opt/nvidia/hpc_sdk
+ENV MANPATH=$MANPATH:$NVCOMPILERS/$NVARCH/20.9/compilers/man
+ENV PATH=$NVCOMPILERS/$NVARCH/20.9/compilers/bin:$PATH
+ENV NVIDIA_VISIBLE_DEVICES all
+ENV NVIDIA_DRIVER_CAPABILITIES compute,utility
+#ENV NVIDIA_DRIVER_CAPABILITIES compute,utility,display,video,graphics
+ENV CUDA_INCLUDE_DIRS=/opt/nvidia/hpc_sdk/Linux_x86_64/20.9/cuda/11.0/targets/x86_64-linux/include
+ENV LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/opt/nvidia/hpc_sdk/Linux_x86_64/20.9/cuda/11.0/targets/x86_64-linux/lib
+ENV CUDA_CUDART_LIBRARY=/opt/nvidia/hpc_sdk/Linux_x86_64/20.9/cuda/11.0/targets/x86_64-linux/lib/libcudart.so
+
 RUN git clone --recursive https://github.com/essentialsofparallelcomputing/Chapter12.git
 
 WORKDIR /home/chapter12/Chapter12
-#RUN make -f Makefile.opencl
-#RUN cd OpenCL/StreamTriad && mkdir build && cd build && cmake .. && make && ./StreamTriad
-#
-RUN clinfo
-RUN cd OpenCL/StreamTriad && cmake . && make && ./StreamTriad
+
+RUN nvidia-smi
+
+RUN cd CUDA/StreamTriad && ln -s CMakeLists_new.txt CMakeLists.txt && mkdir build && cd build && cmake .. && make && ./StreamTriad
+#RUN make
 
 ENTRYPOINT ["bash"]
