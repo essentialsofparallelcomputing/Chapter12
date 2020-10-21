@@ -1,0 +1,86 @@
+FROM ubuntu:20.04
+# To get the GPU available during build
+# This does the same thing as --gpus all
+# sudo vi /etc/docker/daemon.json
+# sudo systemctl restart docker
+#{
+#    "runtimes": {
+#        "nvidia": {
+#            "path": "nvidia-container-runtime",
+#            "runtimeArgs": []
+#        }
+#    },
+#    "default-runtime": "nvidia"
+#}
+
+WORKDIR /project
+RUN apt-get -qq update && \
+    DEBIAN_FRONTEND=noninteractive \
+    apt-get -qq install -y cmake git vim gcc g++ gfortran && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Installing latest GCC compiler (version 8) for latest compatible with CUDA
+RUN apt-get -qq update && \
+    apt-get -qq install -y gcc-8 g++-8 gfortran-8 \
+                           gcc-10 g++-10 gfortran-10 && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# We can use the update-alternatives to switch between compiler versions
+RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 70\
+                        --slave /usr/bin/g++ g++ /usr/bin/g++-8\
+                        --slave /usr/bin/gfortran gfortran /usr/bin/gfortran-8\
+                        --slave /usr/bin/gcov gcov /usr/bin/gcov-8
+
+RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 80\
+                        --slave /usr/bin/g++ g++ /usr/bin/g++-9\
+                        --slave /usr/bin/gfortran gfortran /usr/bin/gfortran-9\
+                        --slave /usr/bin/gcov gcov /usr/bin/gcov-9
+
+RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 90\
+                        --slave /usr/bin/g++ g++ /usr/bin/g++-10\
+                        --slave /usr/bin/gfortran gfortran /usr/bin/gfortran-10\
+                        --slave /usr/bin/gcov gcov /usr/bin/gcov-10
+
+RUN chmod u+s /usr/bin/update-alternatives
+
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        ocl-icd-libopencl1 \
+        clinfo \
+        ocl-icd-opencl-dev && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
+
+RUN mkdir -p /etc/OpenCL/vendors && \
+    echo "libnvidia-opencl.so.1" > /etc/OpenCL/vendors/nvidia.icd
+
+# nvidia-container-runtime
+ENV NVIDIA_VISIBLE_DEVICES all
+ENV NVIDIA_DRIVER_CAPABILITIES compute,utility
+# also could have graphics,video,display
+# compute -- CUDA and OpenCL
+# graphics -- OpenGL and Vulcan
+# utility -- nvidia-smi (default)
+# video -- video codec sdk
+# display -- X11 display
+# all -- enable all
+
+SHELL ["/bin/bash", "-c"]
+
+RUN groupadd chapter12 && useradd -m -s /bin/bash -g chapter12 chapter12
+
+#RUN usermod -aG video chapter12
+
+WORKDIR /home/chapter12
+RUN chown -R chapter12:chapter12 /home/chapter12
+USER chapter12
+
+RUN git clone --recursive https://github.com/essentialsofparallelcomputing/Chapter12.git
+
+WORKDIR /home/chapter12/Chapter12
+#RUN make -f Makefile.opencl
+#RUN cd OpenCL/StreamTriad && mkdir build && cd build && cmake .. && make && ./StreamTriad
+RUN clinfo
+RUN cd OpenCL/StreamTriad && cmake . && make && ./StreamTriad
+
+ENTRYPOINT ["bash"]

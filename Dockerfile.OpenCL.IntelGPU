@@ -1,0 +1,113 @@
+FROM ubuntu:20.04 AS builder
+WORKDIR /project
+RUN apt-get -qq update && \
+    DEBIAN_FRONTEND=noninteractive \
+    apt-get -qq install -y cmake git vim gcc g++ gfortran wget gnupg && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# Installing latest GCC compiler (version 8) for latest compatible with CUDA
+RUN apt-get -qq update && \
+    apt-get -qq install -y gcc-8 g++-8 gfortran-8 \
+                           gcc-10 g++-10 gfortran-10 && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# We can use the update-alternatives to switch between compiler versions
+RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 70\
+                        --slave /usr/bin/g++ g++ /usr/bin/g++-8\
+                        --slave /usr/bin/gfortran gfortran /usr/bin/gfortran-8\
+                        --slave /usr/bin/gcov gcov /usr/bin/gcov-8
+
+RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 80\
+                        --slave /usr/bin/g++ g++ /usr/bin/g++-9\
+                        --slave /usr/bin/gfortran gfortran /usr/bin/gfortran-9\
+                        --slave /usr/bin/gcov gcov /usr/bin/gcov-9
+
+RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 90\
+                        --slave /usr/bin/g++ g++ /usr/bin/g++-10\
+                        --slave /usr/bin/gfortran gfortran /usr/bin/gfortran-10\
+                        --slave /usr/bin/gcov gcov /usr/bin/gcov-10
+
+RUN chmod u+s /usr/bin/update-alternatives
+
+## Intel graphics software for computation
+RUN wget -q https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS-2023.PUB
+RUN apt-key add GPG-PUB-KEY-INTEL-SW-PRODUCTS-2023.PUB
+RUN rm -f GPG-PUB-KEY-INTEL-SW-PRODUCTS-2023.PUB
+RUN echo "deb https://apt.repos.intel.com/oneapi all main" >> /etc/apt/sources.list.d/oneAPI.list
+RUN echo "deb [trusted=yes arch=amd64] https://repositories.intel.com/graphics/ubuntu bionic main" >> /etc/apt/sources.list.d/intel-graphics.list
+
+#RUN add-apt-repository ppa:intel-opencl/intel-opencl
+
+RUN apt-get -qq update && \
+    apt-get -qq install -y \
+             intel-opencl-icd && \
+     apt-get clean && \
+     rm -rf /var/lib/apt/lists/*
+
+RUN apt-get -qq update && \
+    apt-get -qq install -y \
+             clinfo && \
+     apt-get clean && \
+     rm -rf /var/lib/apt/lists/*
+
+RUN clinfo
+
+#            intel-basekit-getting-started \
+#            intel-oneapi-advisor \
+#            intel-oneapi-ccl \
+#            intel-oneapi-common-licensing \
+#            intel-oneapi-common-vars \
+#            intel-oneapi-dev-utilities \
+#            intel-oneapi-dpcpp-compiler \
+#            intel-oneapi-dpcpp-ct \
+#            intel-oneapi-dpcpp-debugger \
+#            intel-oneapi-ipp \
+#            intel-oneapi-ipp-devel \
+#            intel-oneapi-libdpstd-devel \
+#            intel-oneapi-mkl \
+#            intel-oneapi-mkl-devel \
+#            intel-oneapi-openmp \
+#            intel-oneapi-tbb \
+#            intel-oneapi-tbb-devel \
+#            intel-oneapi-vtune \
+#            intel-oneapi-icc \
+#            intel-oneapi-icc-eclipse-cfg \
+#            intel-hpckit-getting-started \
+#            intel-oneapi-ifort \
+#            intel-oneapi-inspector \
+#            intel-oneapi-itac \
+#            intel-opencl && \
+#    apt-get clean && \
+#    rm -rf /var/lib/apt/lists/*
+#
+## Generic OpenCL Loader
+#RUN apt-get -qq update && \
+#    apt-get -qq install -y clinfo ocl-icd-libopencl1 ocl-icd-* opencl-headers && \
+#    apt-get clean && \
+#    rm -rf /var/lib/apt/lists/*
+
+#RUN nvidia-smi
+
+SHELL ["/bin/bash", "-c"]
+
+RUN groupadd chapter12 && useradd -m -s /bin/bash -g chapter12 chapter12
+
+RUN usermod -a -G video chapter12
+
+WORKDIR /home/chapter12
+RUN chown -R chapter12:chapter12 /home/chapter12
+USER chapter12
+#ENV Kokkos_DIR=/Project/Kokkos/lib/cmake/Kokkos
+#ENV Raja_DIR=/Project/Raja/share/raja/cmake
+#ENV PATH=${PATH}:/opt/rocm/bin:/opt/rocm/profiler/bin:/opt/rocm/opencl/bin/x86_64
+#ENV PATH=${PATH}:/opt/intel/inteloneapi/compiler/2021.1-beta04/linux/bin
+#ENV LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/opt/intel/inteloneapi/compiler/2021.1-beta04/linux/compiler/lib/intel64_lin:/opt/intel/inteloneapi/compiler/2021.1-beta04/linux/lib
+
+RUN git clone --recursive https://github.com/essentialsofparallelcomputing/Chapter12.git
+
+WORKDIR /home/chapter12/Chapter12
+#RUN make
+
+ENTRYPOINT ["bash"]
