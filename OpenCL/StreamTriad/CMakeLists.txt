@@ -9,6 +9,8 @@ find_package(OpenCL REQUIRED)
 set(HAVE_CL_DOUBLE ON CACHE BOOL "Have OpenCL Double")
 set(NO_CL_DOUBLE OFF)
 include_directories(${OpenCL_INCLUDE_DIRS})
+#message("OpenCL_INCLUDE_DIRS ${OpenCL_INCLUDE_DIRS}")
+#message("OPENCL_LIBRARIES ${OPENCL_LIBRARIES}")
 
 # Adds build target of StreamTriad with source code files
 add_executable(StreamTriad StreamTriad.c ezcl_lite.c ezcl_lite.h timer.c timer.h)

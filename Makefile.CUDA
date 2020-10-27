@@ -1,4 +1,5 @@
-ALL: StreamTriad_CUDA_Simple StreamTriad_CUDA_old StreamTriad_CUDA_new clean
+ALL: StreamTriad_CUDA_Simple StreamTriad_CUDA_new clean
+#ALL: StreamTriad_CUDA_Simple StreamTriad_CUDA_old StreamTriad_CUDA_new clean
 
 .PHONY: StreamTriad_CUDA_Simple CUDA/StreamTriad/StreamTriad StreamTriad_CUDA_old CUDA/StreamTriad/oldbuild/StreamTriad 
 .PHONY: StreamTriad_CUDA_new CUDA/StreamTriad/newbuild/StreamTriad SumReduction_CUDA CUDA/StreamTriad/build/StreamTriad clean
@@ -13,7 +14,7 @@ StreamTriad_CUDA_old: CUDA/StreamTriad/oldbuild/StreamTriad
 
 CUDA/StreamTriad/oldbuild/StreamTriad:
 	cd CUDA/StreamTriad && ln -s CMakeLists_old.txt CMakeLists.txt && \
-	  mkdir oldbuild && cd oldbuild && -DCUDA_INCLUDE_DIRS=${CUDA_INCLUDE_DIRS} -DCUDA_CUDART_LIBRARY=${CUDA_CUDART_LIBRARY} && cmake .. && make && ./StreamTriad && rm -f CMakeLists.txt
+	  mkdir oldbuild && cd oldbuild && cmake .. && make && ./StreamTriad && rm -f CMakeLists.txt
 	rm -f CUDA/StreamTriad/CMakeLists.txt
 
 StreamTriad_CUDA_new: CUDA/StreamTriad/newbuild/StreamTriad

@@ -1,31 +1,64 @@
+# Part of the examples from the Parallel and High Performance Computing
+# Robey and Zamora, Manning Publications
+#   https://github.com/EssentialsofParallelComputing/Chapter12
+#
+# The built image can be found at:
+#
+#   https://hub.docker.com/r/essentialsofparallelcomputing/chapter12
+#
+# Author:
+# Bob Robey <brobey@earthlink.net>
+
 FROM ubuntu:20.04 AS builder
-WORKDIR /project
+LABEL maintainer Bob Robey <brobey@earthlink.net>
+
+ARG DOCKER_LANG=en_US
+ARG DOCKER_TIMEZONE=America/Denver
+
+WORKDIR /tmp
+RUN apt-get -qq update && \
+    DEBIAN_FRONTEND=noninteractive \
+    apt-get -qq install -y locales tzdata && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
+
+ENV LANG=$DOCKER_LANG.UTF-8 \
+    LANGUAGE=$DOCKER_LANG:UTF-8
+
+RUN ln -fs /usr/share/zoneinfo/$DOCKER_TIMEZONE /etc/localtime && \
+    locale-gen $LANG && update-locale LANG=$LANG && \
+    dpkg-reconfigure -f noninteractive locales tzdata
+
+ENV LC_ALL=$DOCKER_LANG.UTF-8
+
 RUN apt-get -qq update && \
     DEBIAN_FRONTEND=noninteractive \
     apt-get -qq install -y cmake git vim gcc g++ gfortran software-properties-common \
             wget gnupg python3 xterm libnuma1 && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Installing latest GCC compiler (version 8) for latest compatible with CUDA
 RUN apt-get -qq update && \
     apt-get -qq install -y gcc-8 g++-8 gfortran-8 \
                            gcc-10 g++-10 gfortran-10 && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# We can use the update-alternatives to switch between compiler versions
-RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 90\
-                        --slave /usr/bin/g++ g++ /usr/bin/g++-8\
-                        --slave /usr/bin/gfortran gfortran /usr/bin/gfortran-8\
-                        --slave /usr/bin/gcov gcov /usr/bin/gcov-8
-
-RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 70\
-                        --slave /usr/bin/g++ g++ /usr/bin/g++-10\
-                        --slave /usr/bin/gfortran gfortran /usr/bin/gfortran-10\
-                        --slave /usr/bin/gcov gcov /usr/bin/gcov-10
-
-RUN chmod u+s /usr/bin/update-alternatives
+# Problem with compile of compact hash neighbor with gcc-10
+RUN update-alternatives \
+      --install /usr/bin/gcc      gcc      /usr/bin/gcc-8       80 \
+      --slave   /usr/bin/g++      g++      /usr/bin/g++-8          \
+      --slave   /usr/bin/gfortran gfortran /usr/bin/gfortran-8     \
+      --slave   /usr/bin/gcov     gcov     /usr/bin/gcov-8      && \
+    update-alternatives \
+      --install /usr/bin/gcc      gcc      /usr/bin/gcc-9       90 \
+      --slave   /usr/bin/g++      g++      /usr/bin/g++-9          \
+      --slave   /usr/bin/gfortran gfortran /usr/bin/gfortran-9     \
+      --slave   /usr/bin/gcov     gcov     /usr/bin/gcov-9      && \
+    update-alternatives \
+      --install /usr/bin/gcc      gcc      /usr/bin/gcc-10      70 \
+      --slave   /usr/bin/g++      g++      /usr/bin/g++-10         \
+      --slave   /usr/bin/gfortran gfortran /usr/bin/gfortran-10    \
+      --slave   /usr/bin/gcov     gcov     /usr/bin/gcov-10     && \
+    chmod u+s /usr/bin/update-alternatives
 
 ## Intel graphics software for computation
 #RUN wget -q https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS-2023.PUB
@@ -33,7 +66,7 @@ RUN chmod u+s /usr/bin/update-alternatives
 #RUN rm -f GPG-PUB-KEY-INTEL-SW-PRODUCTS-2023.PUB
 #RUN echo "deb https://apt.repos.intel.com/oneapi all main" >> /etc/apt/sources.list.d/oneAPI.list
 #RUN echo "deb [trusted=yes arch=amd64] https://repositories.intel.com/graphics/ubuntu bionic main" >> /etc/apt/sources.list.d/intel-graphics.list
-#
+
 #RUN apt-get -qq update && \
 #    apt-get -qq install -y \
 #            intel-basekit-getting-started \
@@ -61,14 +94,12 @@ RUN chmod u+s /usr/bin/update-alternatives
 #            intel-oneapi-inspector \
 #            intel-oneapi-itac \
 #            intel-opencl && \
-#    apt-get clean && \
-#    rm -rf /var/lib/apt/lists/*
-#
+#    apt-get clean && rm -rf /var/lib/apt/lists/*
+
 ## Generic OpenCL Loader
 #RUN apt-get -qq update && \
 #    apt-get -qq install -y clinfo ocl-icd-libopencl1 ocl-icd-* opencl-headers && \
-#    apt-get clean && \
-#    rm -rf /var/lib/apt/lists/*
+#    apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Nvidia GPU software for computation
 # See https://docs.nvidia.com/hpc-sdk/index.html for Nvidia install instructions
@@ -82,37 +113,43 @@ RUN wget --no-verbose https://developer.download.nvidia.com/hpc-sdk/20.9/nvhpc-2
     apt-get install -y ./nvhpc-20-9_20.9_amd64.deb ./nvhpc-2020_20.9_amd64.deb && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN nvidia-smi
+# ROCm software installation
+RUN apt-get -qq update && \
+    apt-get -qq install -y libnuma-dev && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
-## ROCm software installation
-#RUN apt-get -qq update && \
-#    apt-get -qq install -y libnuma-dev && \
-#    apt-get clean && \
-#    rm -rf /var/lib/apt/lists/*
-#
-#RUN wget -qO - http://repo.radeon.com/rocm/apt/debian/rocm.gpg.key | apt-key add -
-#RUN echo 'deb [arch=amd64] http://repo.radeon.com/rocm/apt/debian/ xenial main' >> /etc/apt/sources.list.d/rocm.list
-#RUN apt-get -qq update && \
-#    apt-get -qq install -y rocm-opencl-dev rocm-dkms && \
-#    apt-get clean && \
-#    rm -rf /var/lib/apt/lists/*
-#
-## Vendor OpenCL
+RUN wget -qO - http://repo.radeon.com/rocm/apt/debian/rocm.gpg.key | apt-key add -
+RUN echo 'deb [arch=amd64] http://repo.radeon.com/rocm/apt/debian/ xenial main' >> /etc/apt/sources.list.d/rocm.list
+RUN apt-get update -q && \
+    apt-get install -q -y rocm-opencl-dev rocm-dkms && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Vendor OpenCL
 #RUN apt-get -qq update && \
 #    apt-get -qq install -y mesa-opencl-icd && \
-#    apt-get clean && \
-#    rm -rf /var/lib/apt/lists/*
+#    apt-get clean && rm -rf /var/lib/apt/lists/*
 
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        ocl-icd-libopencl1 \
+        clinfo \
+        opencl-headers \
+        ocl-icd-opencl-dev && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
+
+RUN mkdir -p /etc/OpenCL/vendors && \
+    echo "libnvidia-opencl.so.1" > /etc/OpenCL/vendors/nvidia.icd
+
+WORKDIR /project
 #RUN git clone https://github.com/triSYCL/triSYCL.git
-#
-#RUN git clone https://github.com/kokkos/kokkos Kokkos_build && mkdir Kokkos_build/build
-#WORKDIR /project/Kokkos_build/build
-#RUN cmake .. -DCMAKE_INSTALL_PREFIX=/Project/Kokkos -DKokkos_ENABLE_OPENMP=On && make install
-#
-#WORKDIR /project
-#RUN git clone --recursive https://github.com/llnl/raja.git Raja_build && mkdir Raja_build/build
-#WORKDIR /project/Raja_build/build
-#RUN cmake ../ -DCMAKE_INSTALL_PREFIX=/Project/Raja && make install
+
+RUN git clone https://github.com/kokkos/kokkos Kokkos_build && mkdir Kokkos_build/build
+WORKDIR /project/Kokkos_build/build
+RUN cmake .. -DCMAKE_INSTALL_PREFIX=/Project/Kokkos -DKokkos_ENABLE_OPENMP=On && make install
+
+WORKDIR /project
+RUN git clone --recursive https://github.com/llnl/raja.git Raja_build && mkdir Raja_build/build
+WORKDIR /project/Raja_build/build
+RUN cmake ../ -DCMAKE_INSTALL_PREFIX=/Project/Raja && make install
 
 SHELL ["/bin/bash", "-c"]
 
@@ -123,18 +160,26 @@ RUN usermod -a -G video chapter12
 WORKDIR /home/chapter12
 RUN chown -R chapter12:chapter12 /home/chapter12
 USER chapter12
-#ENV Kokkos_DIR=/Project/Kokkos/lib/cmake/Kokkos
-#ENV Raja_DIR=/Project/Raja/share/raja/cmake
-#ENV PATH=${PATH}:/opt/rocm/bin:/opt/rocm/profiler/bin:/opt/rocm/opencl/bin/x86_64
+
+ENV LANG='en_US.UTF-8'
+ENV DISPLAY=:0
+ENV NVIDIA_VISIBLE_DEVICES=all
+ENV NVIDIA_DRIVER_CAPABILITIES=display,graphics,utility,compute
+#ENV NVIDIA_DRIVER_CAPABILITIES all
+
+ENV Kokkos_DIR=/Project/Kokkos/lib/cmake/Kokkos
+ENV Raja_DIR=/Project/Raja/share/raja/cmake
+ENV PATH=${PATH}:/opt/rocm/bin:/opt/rocm/profiler/bin:/opt/rocm/opencl/bin/x86_64
+
 #ENV PATH=${PATH}:/opt/intel/inteloneapi/compiler/2021.1-beta04/linux/bin
 #ENV LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/opt/intel/inteloneapi/compiler/2021.1-beta04/linux/compiler/lib/intel64_lin:/opt/intel/inteloneapi/compiler/2021.1-beta04/linux/lib
+
 ENV NVARCH=Linux_x86_64
 ENV NVCOMPILERS=/opt/nvidia/hpc_sdk
 ENV MANPATH=$MANPATH:$NVCOMPILERS/$NVARCH/20.9/compilers/man
 ENV PATH=$NVCOMPILERS/$NVARCH/20.9/compilers/bin:$PATH
-ENV NVIDIA_VISIBLE_DEVICES all
-ENV NVIDIA_DRIVER_CAPABILITIES all
-#ENV NVIDIA_DRIVER_CAPABILITIES compute,utility,display,video,graphics
+ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${NVCOMPILERS}/${NVARCH}/20.9/cuda/11.0/extras/CUPTI/lib64
+
 ENV CUDA_INCLUDE_DIRS=/opt/nvidia/hpc_sdk/Linux_x86_64/20.9/cuda/11.0/targets/x86_64-linux/include
 ENV LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/opt/nvidia/hpc_sdk/Linux_x86_64/20.9/cuda/11.0/targets/x86_64-linux/lib
 ENV CUDA_CUDART_LIBRARY=/opt/nvidia/hpc_sdk/Linux_x86_64/20.9/cuda/11.0/targets/x86_64-linux/lib/libcudart.so
@@ -142,6 +187,6 @@ ENV CUDA_CUDART_LIBRARY=/opt/nvidia/hpc_sdk/Linux_x86_64/20.9/cuda/11.0/targets/
 RUN git clone --recursive https://github.com/essentialsofparallelcomputing/Chapter12.git
 
 WORKDIR /home/chapter12/Chapter12
-RUN make
+#RUN make
 
 ENTRYPOINT ["bash"]

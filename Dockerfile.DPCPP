@@ -102,8 +102,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         ocl-icd-opencl-dev && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN mkdir -p /etc/OpenCL/vendors && \
-    echo "libnvidia-opencl.so.1" > /etc/OpenCL/vendors/nvidia.icd
+#RUN mkdir -p /etc/OpenCL/vendors && \
+#    echo "libnvidia-opencl.so.1" > /etc/OpenCL/vendors/nvidia.icd
 
 # nvidia-container-runtime
 ENV NVIDIA_VISIBLE_DEVICES all
@@ -126,8 +126,9 @@ WORKDIR /home/chapter12
 RUN chown -R chapter12:chapter12 /home/chapter12
 USER chapter12
 
-ENV PATH=${PATH}:/opt/intel/oneapi/compiler/latest/linux/bin
-ENV LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/opt/intel/oneapi/compiler/latest/linux/compiler/lib/intel64_lin:/opt/intel/oneapi/compiler/latest/linux/lib
+RUN source /opt/intel/oneapi/setvars.sh
+#ENV PATH=${PATH}:/opt/intel/oneapi/compiler/latest/linux/bin
+#ENV LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/opt/intel/oneapi/compiler/latest/linux/compiler/lib/intel64_lin:/opt/intel/oneapi/compiler/latest/linux/lib
 
 RUN git clone --recursive https://github.com/essentialsofparallelcomputing/Chapter12.git
 
