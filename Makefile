@@ -1,7 +1,7 @@
 #ALL: Makefile.CUDA SumReductionRevealed
-ALL: Makefile.CUDA Kokkos Raja OpenCL_Nvidia
+ALL: Makefile.CUDA OpenCL_Nvidia DPCPP Kokkos Raja
 
-.PHONY: Makefile.CUDA SumReductionRevealed Kokkos Raja OpenCL_Nvidia
+.PHONY: Makefile.CUDA SumReductionRevealed OpenCL_Nvidia DPCPP Kokkos Raja
 
 Makefile.CUDA:
 	make -f ./Makefile.CUDA
@@ -18,9 +18,13 @@ Raja:
 OpenCL_Nvidia:
 	cd OpenCL/StreamTriad && cmake . && make && ./StreamTriad
 
+DPCPP:
+	cd DPCPP/StreamTriad && make && ./StreamTriad
+
 clean:
 	#cd CUDA/SumReductionRevealed && make clean
 	make -f ./Makefile.CUDA clean
 	cd Kokkos/StreamTriad && rm -rf build
 	cd Raja/StreamTriad && rm -rf build
-	cd OpenCL/StreamTriad && make clean
+	cd OpenCL/StreamTriad && rm -rf build
+	cd DPCPP/StreamTriad && make clean

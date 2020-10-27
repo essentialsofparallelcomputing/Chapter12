@@ -60,41 +60,41 @@ RUN update-alternatives \
       --slave   /usr/bin/gcov     gcov     /usr/bin/gcov-10     && \
     chmod u+s /usr/bin/update-alternatives
 
-## Intel graphics software for computation
-#RUN wget -q https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS-2023.PUB
-#RUN apt-key add GPG-PUB-KEY-INTEL-SW-PRODUCTS-2023.PUB
-#RUN rm -f GPG-PUB-KEY-INTEL-SW-PRODUCTS-2023.PUB
-#RUN echo "deb https://apt.repos.intel.com/oneapi all main" >> /etc/apt/sources.list.d/oneAPI.list
-#RUN echo "deb [trusted=yes arch=amd64] https://repositories.intel.com/graphics/ubuntu bionic main" >> /etc/apt/sources.list.d/intel-graphics.list
+# Intel graphics software for computation
+RUN wget -q https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS-2023.PUB
+RUN apt-key add GPG-PUB-KEY-INTEL-SW-PRODUCTS-2023.PUB
+RUN rm -f GPG-PUB-KEY-INTEL-SW-PRODUCTS-2023.PUB
+RUN echo "deb https://apt.repos.intel.com/oneapi all main" >> /etc/apt/sources.list.d/oneAPI.list
+RUN echo "deb [trusted=yes arch=amd64] https://repositories.intel.com/graphics/ubuntu bionic main" >> /etc/apt/sources.list.d/intel-graphics.list
 
-#RUN apt-get -qq update && \
-#    apt-get -qq install -y \
-#            intel-basekit-getting-started \
-#            intel-oneapi-advisor \
-#            intel-oneapi-ccl \
-#            intel-oneapi-common-licensing \
-#            intel-oneapi-common-vars \
-#            intel-oneapi-dev-utilities \
-#            intel-oneapi-dpcpp-compiler \
-#            intel-oneapi-dpcpp-ct \
-#            intel-oneapi-dpcpp-debugger \
-#            intel-oneapi-ipp \
-#            intel-oneapi-ipp-devel \
-#            intel-oneapi-libdpstd-devel \
-#            intel-oneapi-mkl \
-#            intel-oneapi-mkl-devel \
-#            intel-oneapi-openmp \
-#            intel-oneapi-tbb \
-#            intel-oneapi-tbb-devel \
-#            intel-oneapi-vtune \
-#            intel-oneapi-icc \
-#            intel-oneapi-icc-eclipse-cfg \
-#            intel-hpckit-getting-started \
-#            intel-oneapi-ifort \
-#            intel-oneapi-inspector \
-#            intel-oneapi-itac \
-#            intel-opencl && \
-#    apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN apt-get -qq update && \
+    apt-get -qq install -y \
+            intel-basekit-getting-started \
+            intel-oneapi-advisor \
+            intel-oneapi-ccl \
+            intel-oneapi-common-licensing \
+            intel-oneapi-common-vars \
+            intel-oneapi-dev-utilities \
+            intel-oneapi-dpcpp-compiler \
+            intel-oneapi-dpcpp-ct \
+            intel-oneapi-dpcpp-debugger \
+            intel-oneapi-ipp \
+            intel-oneapi-ipp-devel \
+            intel-oneapi-libdpstd-devel \
+            intel-oneapi-mkl \
+            intel-oneapi-mkl-devel \
+            intel-oneapi-openmp \
+            intel-oneapi-tbb \
+            intel-oneapi-tbb-devel \
+            intel-oneapi-vtune \
+            intel-oneapi-icc \
+            intel-oneapi-icc-eclipse-cfg \
+            intel-hpckit-getting-started \
+            intel-oneapi-ifort \
+            intel-oneapi-inspector \
+            intel-oneapi-itac \
+            intel-opencl && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
 ## Generic OpenCL Loader
 #RUN apt-get -qq update && \
@@ -171,8 +171,9 @@ ENV Kokkos_DIR=/Project/Kokkos/lib/cmake/Kokkos
 ENV Raja_DIR=/Project/Raja/share/raja/cmake
 ENV PATH=${PATH}:/opt/rocm/bin:/opt/rocm/profiler/bin:/opt/rocm/opencl/bin/x86_64
 
-#ENV PATH=${PATH}:/opt/intel/inteloneapi/compiler/2021.1-beta04/linux/bin
-#ENV LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/opt/intel/inteloneapi/compiler/2021.1-beta04/linux/compiler/lib/intel64_lin:/opt/intel/inteloneapi/compiler/2021.1-beta04/linux/lib
+RUN source /opt/intel/oneapi/setvars.sh
+#ENV PATH=${PATH}:/opt/intel/oneapi/compiler/latest/linux/bin
+#ENV LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/opt/intel/oneapi/compiler/latest/linux/compiler/lib/intel64_lin:/opt/intel/oneapi/compiler/latest/linux/lib
 
 ENV NVARCH=Linux_x86_64
 ENV NVCOMPILERS=/opt/nvidia/hpc_sdk
