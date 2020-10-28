@@ -19,7 +19,7 @@ OpenCL_Nvidia:
 	cd OpenCL/StreamTriad && cmake . && make && ./StreamTriad
 
 DPCPP:
-	cd DPCPP/StreamTriad && make && ./StreamTriad
+	cd DPCPP/StreamTriad && make # && ./StreamTriad
 
 clean:
 	#cd CUDA/SumReductionRevealed && make clean

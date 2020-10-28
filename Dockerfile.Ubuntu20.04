@@ -69,32 +69,36 @@ RUN echo "deb [trusted=yes arch=amd64] https://repositories.intel.com/graphics/u
 
 RUN apt-get -qq update && \
     apt-get -qq install -y \
-            intel-basekit-getting-started \
-            intel-oneapi-advisor \
-            intel-oneapi-ccl \
-            intel-oneapi-common-licensing \
-            intel-oneapi-common-vars \
-            intel-oneapi-dev-utilities \
             intel-oneapi-dpcpp-compiler \
             intel-oneapi-dpcpp-ct \
-            intel-oneapi-dpcpp-debugger \
-            intel-oneapi-ipp \
-            intel-oneapi-ipp-devel \
-            intel-oneapi-libdpstd-devel \
-            intel-oneapi-mkl \
-            intel-oneapi-mkl-devel \
-            intel-oneapi-openmp \
-            intel-oneapi-tbb \
-            intel-oneapi-tbb-devel \
-            intel-oneapi-vtune \
-            intel-oneapi-icc \
-            intel-oneapi-icc-eclipse-cfg \
-            intel-hpckit-getting-started \
-            intel-oneapi-ifort \
-            intel-oneapi-inspector \
-            intel-oneapi-itac \
-            intel-opencl && \
+            intel-oneapi-dpcpp-debugger && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
+
+#            intel-basekit-getting-started \
+#            intel-oneapi-advisor \
+#            intel-oneapi-ccl \
+#            intel-oneapi-common-licensing \
+#            intel-oneapi-common-vars \
+#            intel-oneapi-dev-utilities \
+#            intel-oneapi-dpcpp-compiler \
+#            intel-oneapi-dpcpp-ct \
+#            intel-oneapi-dpcpp-debugger \
+#            intel-oneapi-ipp \
+#            intel-oneapi-ipp-devel \
+#            intel-oneapi-libdpstd-devel \
+#            intel-oneapi-mkl \
+#            intel-oneapi-mkl-devel \
+#            intel-oneapi-openmp \
+#            intel-oneapi-tbb \
+#            intel-oneapi-tbb-devel \
+#            intel-oneapi-vtune \
+#            intel-oneapi-icc \
+#            intel-hpckit-getting-started \
+#            intel-oneapi-ifort \
+#            intel-oneapi-inspector \
+#            intel-oneapi-itac \
+#            intel-opencl && \
+#    apt-get clean && rm -rf /var/lib/apt/lists/*
 
 ## Generic OpenCL Loader
 #RUN apt-get -qq update && \
@@ -172,8 +176,8 @@ ENV Raja_DIR=/Project/Raja/share/raja/cmake
 ENV PATH=${PATH}:/opt/rocm/bin:/opt/rocm/profiler/bin:/opt/rocm/opencl/bin/x86_64
 
 RUN source /opt/intel/oneapi/setvars.sh
-#ENV PATH=${PATH}:/opt/intel/oneapi/compiler/latest/linux/bin
-#ENV LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/opt/intel/oneapi/compiler/latest/linux/compiler/lib/intel64_lin:/opt/intel/oneapi/compiler/latest/linux/lib
+ENV PATH=${PATH}:/opt/intel/oneapi/compiler/latest/linux/bin
+ENV LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/opt/intel/oneapi/compiler/latest/linux/compiler/lib/intel64_lin:/opt/intel/oneapi/compiler/latest/linux/lib
 
 ENV NVARCH=Linux_x86_64
 ENV NVCOMPILERS=/opt/nvidia/hpc_sdk
