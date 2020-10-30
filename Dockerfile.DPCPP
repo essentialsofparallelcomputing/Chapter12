@@ -87,7 +87,7 @@ RUN apt-get -qq update && \
             intel-oneapi-tbb \
             intel-oneapi-tbb-devel \
             intel-oneapi-vtune \
-            intel-oneapi-icc \
+            intel-oneapi-dpcpp-cpp-compiler-pro \
             intel-oneapi-icc-eclipse-cfg \
             intel-hpckit-getting-started \
             intel-oneapi-ifort \
