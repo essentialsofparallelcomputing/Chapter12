@@ -72,7 +72,7 @@ RUN clinfo
 #            intel-oneapi-tbb \
 #            intel-oneapi-tbb-devel \
 #            intel-oneapi-vtune \
-#            intel-oneapi-dpcpp-cpp-compiler-pro \
+#            intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic \
 #            intel-oneapi-icc-eclipse-cfg \
 #            intel-hpckit-getting-started \
 #            intel-oneapi-ifort \
